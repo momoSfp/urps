@@ -2,16 +2,14 @@
 
 namespace App\Entity;
 
-use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\Entity(repositoryClass="App\Repository\ContentRepository")
  */
-class Game
+class Content
 {
     /**
      * @ORM\Id()
@@ -27,11 +25,6 @@ class Game
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
@@ -61,27 +54,23 @@ class Game
     private $link;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="Game")
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $lastUpdateAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="content", orphanRemoval=true)
      */
     private $images;
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
-    }
-    /**
-     * Initialise slug
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     * 
-     * @return void
-     */
-    public function initializeSlug() {
-        if(empty($this->slug)) {
-            $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->title);
-        }
     }
 
     public function getId(): ?int
@@ -101,24 +90,12 @@ class Game
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -185,6 +162,30 @@ class Game
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getLastUpdateAt(): ?\DateTimeInterface
+    {
+        return $this->lastUpdateAt;
+    }
+
+    public function setLastUpdateAt(\DateTimeInterface $lastUpdateAt): self
+    {
+        $this->lastUpdateAt = $lastUpdateAt;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Image[]
      */
@@ -197,7 +198,7 @@ class Game
     {
         if (!$this->images->contains($image)) {
             $this->images[] = $image;
-            $image->setGame($this);
+            $image->setContent($this);
         }
 
         return $this;
@@ -208,8 +209,8 @@ class Game
         if ($this->images->contains($image)) {
             $this->images->removeElement($image);
             // set the owning side to null (unless already changed)
-            if ($image->getGame() === $this) {
-                $image->setGame(null);
+            if ($image->getContent() === $this) {
+                $image->setContent(null);
             }
         }
 

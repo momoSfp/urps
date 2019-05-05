@@ -3,8 +3,8 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
-use App\Entity\Game;
 use App\Entity\Image;
+use App\Entity\Content;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -16,20 +16,23 @@ class AppFixtures extends Fixture
 
         for($i = 1; $i <= 10; $i++)
         {
-            $game = new Game;
+            $content = new Content;
 
             $title       = $faker->sentence();
             $coverImage  = $faker->imageUrl(1000,400);
             $description = $faker->paragraph(2);
-            $content     = $faker->paragraph(5);
+            $contentText = $faker->paragraph(5);
+            $datetime    = $faker->dateTimeAD('now', 'Europe/Paris');
 
-            $game->setTitle($title)
+            $content->setTitle($title)
                 ->setCoverImage($coverImage)
                 ->setDescription($description)
-                ->setContent($content)
+                ->setContent($contentText)
                 ->setActive(true)
                 ->setPublic(false)
-                ->setLink("http://");
+                ->setLink("http://")
+                ->setCreatedAt($datetime)
+                ->setLastUpdateAt($datetime);
 
             for($j = 1; $j <= mt_rand(2, 4); $j++)
             {
@@ -37,12 +40,12 @@ class AppFixtures extends Fixture
 
                 $image->setUrl($faker->imageUrl(1000,400))
                       ->setCaption($faker->sentence())
-                      ->setGame($game);
+                      ->setContent($content);
 
                 $manager->persist($image);
             }
 
-            $manager->persist($game);
+            $manager->persist($content);
         } 
 
         $manager->flush();

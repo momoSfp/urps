@@ -27,9 +27,10 @@ class Image
     private $caption;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $Game;
+    private $content;
 
     public function getId(): ?int
     {
@@ -60,14 +61,14 @@ class Image
         return $this;
     }
 
-    public function getGame(): ?Game
+    public function getContent(): ?Content
     {
-        return $this->Game;
+        return $this->content;
     }
 
-    public function setGame(?Game $Game): self
+    public function setContent(?Content $content): self
     {
-        $this->Game = $Game;
+        $this->content = $content;
 
         return $this;
     }
