@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
@@ -23,13 +24,16 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=200, minMessage="Le caption doit contenir plus de 5 caractères !",
+     * maxMessage="le caption ne peut pas contenir plus de 200 caractères !")
      */
     private $caption;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $Game;
+    private $content;
 
     public function getId(): ?int
     {
@@ -60,14 +64,14 @@ class Image
         return $this;
     }
 
-    public function getGame(): ?Game
+    public function getContent(): ?Content
     {
-        return $this->Game;
+        return $this->content;
     }
 
-    public function setGame(?Game $Game): self
+    public function setContent(?Content $content): self
     {
-        $this->Game = $Game;
+        $this->content = $content;
 
         return $this;
     }

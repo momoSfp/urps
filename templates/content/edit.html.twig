@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition d'un serious game{% endblock %}
+
+{% form_theme form 'content/_collection.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1>Modifier le serious game : {{ content.title }}</h1>
+
+        {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+
+        <button type="submit" class="btn btn-primary">Edit</button>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="/js/content.js"></script>
+{% endblock %}
