@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
@@ -23,6 +24,8 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=200, minMessage="Le caption doit contenir plus de 5 caractères !",
+     * maxMessage="le caption ne peut pas contenir plus de 200 caractères !")
      */
     private $caption;
 

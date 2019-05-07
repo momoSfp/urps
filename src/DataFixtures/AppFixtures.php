@@ -30,9 +30,7 @@ class AppFixtures extends Fixture
                 ->setContent($contentText)
                 ->setActive(true)
                 ->setPublic(false)
-                ->setLink("http://")
-                ->setCreatedAt($datetime)
-                ->setLastUpdateAt($datetime);
+                ->setLink("http://");
 
             for($j = 1; $j <= mt_rand(2, 4); $j++)
             {

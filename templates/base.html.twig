@@ -4,32 +4,13 @@
         <meta charset="UTF-8">
         <title>Urps-ml-paca - {% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="/css/bootstrap1.min.css">
+        <link rel="stylesheet" href="/css/app.css">
 
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block header %}
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">
-                    <img src="/assets/images/logo-urps.png" alt="logo-urps-ml-paca">
-                </a>                
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarColor03">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>                    
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Me connecter <span class="sr-only">(current)</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        {% endblock %}
-
+        {% include 'shared/header.html.twig' %}
+        
         {% block body %}
             <div class="container mt-3">
                 <div class="jumbotron">

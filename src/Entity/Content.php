@@ -2,12 +2,20 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ContentRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *  fields={"title"},
+ *  message="Un autre serious game possède déja ce titre"
+ * )
  */
 class Content
 {
@@ -20,16 +28,22 @@ class Content
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=200, minMessage="Le titre doit contenir plus de 5 caractères !",
+     * maxMessage="Le titre ne peut pas contenir plus de 200 caractères !")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=200, minMessage="Une description doit contenir plus de 10 caractères !",
+     * maxMessage="Une description ne peut pas contenir plus de 255 caractères !")     
      */
     private $description;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=5, max=4000, minMessage="le resumé du jeux doit contenir plus de 100 caractères !",
+     * maxMessage="le Resumé du jeux ne peut pas contenir plus de 4000 caractères !")     
      */
     private $content;
 
@@ -59,18 +73,41 @@ class Content
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastUpdateAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="content", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $images;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * Get slug of title
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function initializeSlug()
+    {
+        if (empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
     }
 
     public function getId(): ?int
@@ -213,6 +250,18 @@ class Content
                 $image->setContent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
