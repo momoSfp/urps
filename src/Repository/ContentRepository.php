@@ -19,6 +19,16 @@ class ContentRepository extends ServiceEntityRepository
         parent::__construct($registry, Content::class);
     }
 
+    public function findAllActive()
+    {
+        return $this->createQueryBuilder('c')
+        ->andWhere('c.active = true')
+        ->orderBy('c.id', 'Desc')
+        ->setMaxResults(10)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
     // /**
     //  * @return Content[] Returns an array of Content objects
     //  */

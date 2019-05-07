@@ -5,7 +5,9 @@ namespace App\Entity;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -14,8 +16,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity(
  *  fields={"title"},
- *  message="Un autre serious game possède déja ce titre"
- * )
+ *  message="Un autre serious game possède déja ce titre")
+ * @Vich\Uploadable
  */
 class Content
 {
@@ -68,6 +70,25 @@ class Content
     private $link;
 
     /**
+     * @var File
+     * @Vich\UploadableField(mapping="content_game", fileNameProperty="filename")
+     * @Assert\File(
+     *   maxSize = "100M",
+     *   maxSizeMessage = "Limite de taille dépasse {{size}}",
+     *   mimeTypes = {"application/gzip", "application/zip"},
+     *   mimeTypesMessage = "Please upload a valid Zip"
+     * )
+     */
+    private $gameFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
+     */
+    private $fileName;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -108,6 +129,18 @@ class Content
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
+    }
+
+    /**
+     * init lastUpdateAt
+     *
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function initLastUpdate()
+    {
+        $this->lastUpdateAt = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -265,4 +298,31 @@ class Content
 
         return $this;
     }
+
+    public function setGameFile(?File $gameFile = null): void
+    {
+        $this->gameFile = $gameFile;
+
+        if (null !== $gameFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->lastUpdateAt = new \DateTime('now');
+        }        
+    }
+
+    public function getGameFile(): ?File
+    {
+        return $this->gameFile;
+    }
+
+    public function setFileName(?string $fileName): void
+    {
+        $this->fileName = $fileName;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
 }

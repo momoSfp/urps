@@ -1,3 +1,8 @@
+{% block file_widget %}
+    <input type="file" name="{{full_name}}" class="form-control-file" id="{{id}}" aria-describedby="fileHelp">
+    <small id="fileHelp" class="form-text text-muted">Importer le fichier</small>
+{% endblock %}
+
 {% block _content_images_widget %}
     <p>Ajouter des images</p>
 

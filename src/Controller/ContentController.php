@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Content;
 use App\Form\ContentType;
+use App\Utils\ArchiveZip;
 use App\Repository\ContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,7 +20,7 @@ class ContentController extends AbstractController
      */
     public function index(ContentRepository $repo)
     {
-        $contents = $repo->findAll();
+        $contents = $repo->findAllActive();
 
         return $this->render('content/index.html.twig', 
         [
@@ -34,7 +35,7 @@ class ContentController extends AbstractController
      * 
      * @return Response
      */
-    public function create(Request $request, ObjectManager $manager)
+    public function create(Request $request, ObjectManager $manager, ArchiveZip $archive)
     {        
         $content = new Content();
 
@@ -43,11 +44,21 @@ class ContentController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
-        {
+        {    
+            if ($content->getGameFile() !== null)
+            {
+                if ($archive->unzipFile($content->getGameFile()->getClientOriginalName()))
+                {
+                    // TODO GET LINK 
+                    $content->setLink('http://localhost/urps/public/games/extract/gluciboat/index.html');
+                }
+            }
+
             foreach ($content->getImages() as $image) {
                 $image->setContent($content);
                 $manager->persist($image);
             }
+            
             $manager->persist($content);
             $manager->flush();
 
@@ -73,14 +84,25 @@ class ContentController extends AbstractController
      * 
      * @return Response
      */
-    public function edit(Content $content, Request $request, ObjectManager $manager)
+    public function edit(Content $content, Request $request, ObjectManager $manager, ArchiveZip $archive)
     {
         $form = $this->createForm(ContentType::Class, $content);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid())
+        {           
+            
+            if ($content->getGameFile() !== null)
+            {
+                if ($archive->unzipFile($content->getGameFile()->getClientOriginalName()))
+                {
+                    var_dump("ici");
+                    // TODO GET LINK 
+                    $content->setLink('http://localhost/urps/public/games/extract/gluciboat/index.html');
+                }
+            }
+
             foreach ($content->getImages() as $image) {
                 $image->setContent($content);
                 $manager->persist($image);
@@ -94,15 +116,31 @@ class ContentController extends AbstractController
                 "Les modifications du serious game <strong>{$content->getTitle()}</strong> ont bien été enregistrées !"            
             );
             
-            return $this->redirectToRoute('contents_show', [
-                'slug' => $content->getSlug()
-            ]);
+            //return $this->redirectToRoute('contents_show', [
+            //    'slug' => $content->getSlug()
+            //]);
         }
 
         return $this->render('content/edit.html.twig', [
             'form' => $form->createView(),
             'content' => $content
         ]);
+    }
+
+    /**
+     * Play game
+     * 
+     * @Route("/contents/{slug}/play", name="contents_play")
+     * 
+     * @return Response
+     */
+    public function play(Content $content)
+    {
+        return $this->render('content/play.html.twig', 
+        [
+            'content' => $content,
+        ]);
+
     }
 
     /**
@@ -120,4 +158,6 @@ class ContentController extends AbstractController
         ]);
 
     }
+
+    
 }
