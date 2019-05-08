@@ -109,10 +109,16 @@ class Content
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ParticipateContent", mappedBy="content")
+     */
+    private $participateContents;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->participateContents = new ArrayCollection();
     }
 
     /**
@@ -323,6 +329,37 @@ class Content
     public function getFileName(): ?string
     {
         return $this->fileName;
+    }
+
+    /**
+     * @return Collection|ParticipateContent[]
+     */
+    public function getParticipateContents(): Collection
+    {
+        return $this->participateContents;
+    }
+
+    public function addParticipateContent(ParticipateContent $participateContent): self
+    {
+        if (!$this->participateContents->contains($participateContent)) {
+            $this->participateContents[] = $participateContent;
+            $participateContent->setContent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipateContent(ParticipateContent $participateContent): self
+    {
+        if ($this->participateContents->contains($participateContent)) {
+            $this->participateContents->removeElement($participateContent);
+            // set the owning side to null (unless already changed)
+            if ($participateContent->getContent() === $this) {
+                $participateContent->setContent(null);
+            }
+        }
+
+        return $this;
     }
 
 }

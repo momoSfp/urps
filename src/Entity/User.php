@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -57,6 +59,16 @@ class User implements UserInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $UpdatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ParticipateContent", mappedBy="user")
+     */
+    private $participateContents;
+
+    public function __construct()
+    {
+        $this->participateContents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -192,6 +204,37 @@ class User implements UserInterface
     public function setUpdatedAt(?\DateTimeInterface $UpdatedAt): self
     {
         $this->UpdatedAt = $UpdatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ParticipateContent[]
+     */
+    public function getParticipateContents(): Collection
+    {
+        return $this->participateContents;
+    }
+
+    public function addParticipateContent(ParticipateContent $participateContent): self
+    {
+        if (!$this->participateContents->contains($participateContent)) {
+            $this->participateContents[] = $participateContent;
+            $participateContent->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipateContent(ParticipateContent $participateContent): self
+    {
+        if ($this->participateContents->contains($participateContent)) {
+            $this->participateContents->removeElement($participateContent);
+            // set the owning side to null (unless already changed)
+            if ($participateContent->getUser() === $this) {
+                $participateContent->setUser(null);
+            }
+        }
 
         return $this;
     }
