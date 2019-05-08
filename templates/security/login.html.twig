@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/login.css">
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+
+            <!-- Icon -->
+            <div class="fadeIn first">
+                <img src="/assets/images/logo-urps.png" id="icon" alt="User Icon" />
+                <h1>ETP plateforme</h1>
+            </div>
+            {% if error %}
+                <div class="alert alert-danger">
+                    Une erreur est survenue,<br>l'email ou le mot de passe est invalide
+                </div>
+            {% endif %}
+            <!-- Login Form -->
+            <form action = "{{ path('security_login') }}" method="post">
+                <input type="text" id="email" class="fadeIn second" name="_username" placeholder="Adresse email" value="{{ last_username }}"
+                required>
+                <input type="password" id="password" class="fadeIn third" name="_password" placeholder="Mot de passe" required>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                <input type="submit" class="fadeIn fourth" value="Connexion !">
+            </form>
+
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <a class="underlineHover" href="{{ path('security_register') }}">Inscrivez vous !</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('.navbar').remove();
+    </script>
+{% endblock %}

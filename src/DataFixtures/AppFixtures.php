@@ -3,15 +3,50 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
+use App\Entity\User;
+use App\Entity\Image;
 use App\Entity\Content;
+use App\Entity\ParticipateContent;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
         $faker   = Factory::create('Fr-fr');
+
+        // make users
+
+        $users = [];
+
+        for($i = 1; $i <= 5; $i++)
+        {
+            $user = new User();
+            
+            $password = $this->encoder->encodePassword($user, 'pass_1234');
+
+            $user->setFirstname($faker->firstname)
+                 ->setLastname($faker->lastname)
+                 ->setEmail($faker->email)
+                 ->setPassword($password);
+            
+            $manager->persist($user);
+
+            $users[] = $user;
+        }
+        
+        // make contents 
+
+        $contens = [];
 
         for($i = 1; $i <= 10; $i++)
         {
@@ -29,7 +64,8 @@ class AppFixtures extends Fixture
                 ->setContent($contentText)
                 ->setActive(true)
                 ->setPublic(false)
-                ->setLink("http://");
+                ->setLink("https:")
+                ->setFileName("test");
 
             for($j = 1; $j <= mt_rand(2, 4); $j++)
             {
@@ -43,7 +79,24 @@ class AppFixtures extends Fixture
             }
 
             $manager->persist($content);
+
+            $contents[] = $content;
         } 
+
+        // make participate Content
+
+        for($i = 1; $i <= 10; $i++)
+        {
+            $participateContent = new ParticipateContent;
+            $user = $users[mt_rand(0, count($users) -1)];
+            $content = $contents[mt_rand(0, count($contents) -1)];
+
+            $participateContent->setUser($user)         
+                               ->setContent($content)
+                               ->setResult(["test"]);
+
+            $manager->persist($participateContent);
+        }
 
         $manager->flush();
     }

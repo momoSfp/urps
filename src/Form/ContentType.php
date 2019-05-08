@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Content;
 use App\Form\ImageType;
+use App\Form\UtilsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,25 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ContentType extends AbstractType
+class ContentType extends UtilsType
 {
-    /**
-     * form Configuration optional fields
-     *
-     * @param string $label
-     * @param string $placeholder
-     * @param array  $options 
-     * @return array
-     */
-    private function configuration($label, $placeholder, $options = [])
-    {
-        return array_merge ([
-                'label' => $label,
-                'attr'  => [
-                    'placeholder' => $placeholder
-                ]
-            ], $options);
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

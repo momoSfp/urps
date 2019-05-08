@@ -6,9 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ *  fields={"email"},
+ *  message="Cette adresse email est déja utilisé, merci de la modifier")
  */
 class User implements UserInterface
 {
@@ -20,14 +25,34 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="vous devez renseigner votre prénom") 
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "50",
+     *      minMessage = "Le prénom doit comporter au moins {{ limit }} caractères.",
+     *      maxMessage = "Le prénom ne doit pas comporter plus de {{ limit }} caractères."
+     * )
      */
-    private $email;
+    private $firstname;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="vous devez renseigner votre nom de famille") 
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "70",
+     *      minMessage = "Le nom de famille doit comporter au moins {{ limit }} caractères.",
+     *      maxMessage = "Le nom de famille ne doit pas comporter plus de {{ limit }} caractères."
+     * ) 
      */
-    private $roles = [];
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(message="Veuillez renseigner un email valide !") 
+     */
+    private $email;
 
     /**
      * @var string The hashed password
@@ -36,14 +61,9 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\EqualTo(propertyPath="password", message="Vous n'avez pas correctement confirmé votre mot de passe !") 
      */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
+    private $passwordConfirm;
 
     /**
      * @ORM\Column(type="boolean")
@@ -65,9 +85,16 @@ class User implements UserInterface
      */
     private $participateContents;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->participateContents = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->active = true;
     }
 
     public function getId(): ?int
@@ -127,6 +154,18 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPasswordConfirm()
+    {
+        return $this->passwordConfirm;
+    }
+
+    public function setPasswordConfirm(string $passwordConfirm)
+    {
+        $this->passwordConfirm = $passwordConfirm;
 
         return $this;
     }

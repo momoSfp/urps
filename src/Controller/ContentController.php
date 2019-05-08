@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Content;
 use App\Form\ContentType;
 use App\Utils\ArchiveZip;
+use App\Entity\ParticipateContent;
 use App\Repository\ContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -150,11 +151,14 @@ class ContentController extends AbstractController
      * 
      * @return Response
      */
-    public function show(Content $content)
+    public function show(Content $content, ParticipateContent $ParticipateContent)
     {
+
+        
         return $this->render('content/show.html.twig', 
         [
             'content' => $content,
+            'ParticipateContent' => $ParticipateContent
         ]);
 
     }

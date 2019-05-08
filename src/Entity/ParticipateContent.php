@@ -71,4 +71,13 @@ class ParticipateContent
 
         return $this;
     }
+
+    public function getResultByContentIdAndUserId($UserId, $contentId)
+    {
+        if($UserId === $this->user->getId() && $contentId === $this->content->getId())
+        {
+            return $this->result;
+        }
+        else return false;
+    }
 }
