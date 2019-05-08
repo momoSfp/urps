@@ -151,16 +151,15 @@ class ContentController extends AbstractController
      * 
      * @return Response
      */
-    public function show(Content $content, ParticipateContent $ParticipateContent)
+    public function show(Content $content, ParticipateContent $participateContent = null)
     {
+        if (empty($ParticipateContent)) $ParticipateContent = null;
 
-        
         return $this->render('content/show.html.twig', 
         [
             'content' => $content,
-            'ParticipateContent' => $ParticipateContent
+            'participateContent' => $participateContent
         ]);
-
     }
 
     

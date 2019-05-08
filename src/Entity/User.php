@@ -50,6 +50,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="vous devez renseigner votre email") 
      * @Assert\Email(message="Veuillez renseigner un email valide !") 
      */
     private $email;
@@ -57,6 +58,13 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="vous devez renseigner un mot de passe") 
+     * @Assert\Length(
+     *      min = "5",
+     *      max = "70",
+     *      minMessage = "Le mot de passe doit comporter au moins {{ limit }} caractères.",
+     *      maxMessage = "Le mot de passe ne doit pas comporter plus de {{ limit }} caractères."
+     * ) 
      */
     private $password;
 
@@ -209,6 +217,11 @@ class User implements UserInterface
         $this->lastname = $lastname;
 
         return $this;
+    }
+
+    public function getFullname()
+    {
+        return $this->firstname . " " . $this->lastname;
     }
 
     public function getActive(): ?bool

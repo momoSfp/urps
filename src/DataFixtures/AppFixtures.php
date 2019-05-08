@@ -93,7 +93,7 @@ class AppFixtures extends Fixture
 
             $participateContent->setUser($user)         
                                ->setContent($content)
-                               ->setResult(["test"]);
+                               ->setResult(["score" => 70, "time" => 12345, "attemps" => 3]);
 
             $manager->persist($participateContent);
         }

@@ -22,7 +22,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Mon compte</a>
                     <div class="dropdown-menu " x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: -20px; transform: translate3d(0px, 40px, 0px);">
-                        <a class="dropdown-item" href="#">Mon profile</a>
+                        <a class="dropdown-item" href="{{ path('user_profile') }}">Mes informations</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('security_logout') }}">Me déconnecter</a>
                     </div>
@@ -35,10 +35,11 @@
 
 {% for label, messages in app.flashes %}
     <div class="container">
-        <div class="alert alert-{{ label }}">
+        <div class="alert alert-dismissible alert-{{ label }}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
             {% for message in messages %}
-                <p>{{ message | raw }}</p>
+                <p class="mb-0">{{ message | raw }}</p>
             {% endfor %}
-        </div>
+        </div>   
     </div>
 {% endfor %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de {{ user.fullname }}{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <h1>Profil de {{ user.fullname }}</h1>
+        {% if user is same as(app.user) %}
+            <div class="mt-3">
+                <a href="{{ path('user_edit') }}" class="btn btn-primary mr-2 mb-2">Modifier mes informations</a>
+                <a href="{{ path('update_password') }}" class="btn btn-primary mr-2 mb-2">Modifier mon mot de password</a>
+            </div>
+        {% endif %}
+        <hr>
+        <h2>Serious game</h2>
+        <div class="row">
+            {% if user.participateContents %}
+                {% for participateContent in user.participateContents %}
+                    {% set content = participateContent.content %}
+                    {% set url = path('contents_show', {'slug': content.slug }) %}
+                    <div class="col-md-4">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header text-center">
+                                <p>{{ content.title }}</p>
+                            </div>
+                            <a href="{{ url }}">
+                                <img src="{{ content.coverImage }}" alt="image jeux-1"
+                                    style="height: 200px; width: 100%; display: block;">
+                            </a>
+
+                            <div class="card-body">
+                                <h4 class="card-title">Avancement</h4>
+                                {% for key, value in participateContent.result %}
+                                    <p>{{key}} : {{value}}</p>
+                                {% endfor %}
+                                <a href="{{ url }}" class="btn btn-info">En savoir plus</a>
+                            </div>
+                        </div>
+                    </div> 
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Vous n'avez particier a aucun serious game</h4>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+

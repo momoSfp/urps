@@ -43,12 +43,14 @@
 
             </div>
             <div class="col">
-                {{ dump(ParticipateContent) }}
-
                 <h1>Resumé</h1>
-                <p>Score : 200 pts</p>
-                <p>Temps : 2h</p>
-                <p>Tentative : 3</p>
+                {% if participateContent %}
+                    {% for key, value in participateContent.result %}
+                        <p>{{key}} : {{value}}</p>
+                    {% endfor %}
+                {% else %}
+                    <p>vous n'avez pas encore particer a ce serious game</p>
+                {% endif %}
             </div>
         </div>
     </div>
