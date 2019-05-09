@@ -110,7 +110,7 @@ class Content
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ParticipateContent", mappedBy="content")
+     * @ORM\OneToMany(targetEntity="App\Entity\ParticipateContent", mappedBy="content", orphanRemoval=true)
      */
     private $participateContents;
 

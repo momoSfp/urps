@@ -29,6 +29,17 @@ class ContentRepository extends ServiceEntityRepository
         ->getResult()
         ;
     }
+
+    public function findAllActiveAndPublic()
+    {
+        return $this->createQueryBuilder('c')
+        ->andWhere('c.active = true and c.public = true')
+        ->orderBy('c.id', 'Desc')
+        ->setMaxResults(10)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
     // /**
     //  * @return Content[] Returns an array of Content objects
     //  */

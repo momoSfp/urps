@@ -8,14 +8,15 @@ use App\Entity\ParticipateContent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Controller used to manage current user.
  *
- * @Route("/profile")
- *
+ *@Route("/profile")
+ *@IsGranted("ROLE_USER")
  */
 class UserController extends AbstractController
 {

@@ -9,26 +9,41 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarColor03">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ path('home_index') }}">Acceuil <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ path('contents_index') }}">Contenus <span class="sr-only">(current)</span></a>
-                </li>                                                 
-            </ul>
+            {% if is_granted('ROLE_USER') %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ path('home_index') }}"><i class="fas fa-home fa-lg"></i> Acceuil <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ path('contents_index') }}"><i class="fas fa-gamepad fa-lg"></i> Contenus <span class="sr-only">(current)</span></a>
+                    </li>                                                 
+                </ul>
 
-            <ul class="navbar-nav ml-auto" style="padding-right: 30px;">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Mon compte</a>
-                    <div class="dropdown-menu " x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: -20px; transform: translate3d(0px, 40px, 0px);">
-                        <a class="dropdown-item" href="{{ path('user_profile') }}">Mes informations</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path('security_logout') }}">Me déconnecter</a>
-                    </div>
-                </li>
-            </ul>
+                <ul class="navbar-nav ml-auto" style="padding-right: 30px;">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true"><i class="far fa-user-circle fa-lg"></i> Mon compte</a>
+                        <div class="dropdown-menu " x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: -20px; transform: translate3d(0px, 40px, 0px);">
+                            <a class="dropdown-item" href="{{ path('user_profile') }}"><i class="far fa-address-card fa-lg"></i> Mes informations</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="dropdown-item" href="{{ path('user_profile') }}"><i class="fas fa-users-cog fa-lg"></i> Administration</a>
+                            {% endif %}                        
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ path('security_logout') }}"><i class="fas fa-door-open fa-lg"></i> Me déconnecter</a>
+                        </div>
+                    </li>
+                </ul>
+            {% else %}                        
+                <ul class="navbar-nav ml-auto" style="padding-right: 30px;">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ path('security_login') }}">Se connecter <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ path('security_register') }}">S'inscrire<span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            {% endif %}                 
         </div>
+                       
     </nav>
 {% endblock %}
 

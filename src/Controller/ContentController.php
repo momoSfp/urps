@@ -12,12 +12,20 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Controller used to manage an view content.
+ *
+ *@Route("/contents")
+ *@IsGranted("ROLE_USER")
+ */
 class ContentController extends AbstractController
 {
     /**
-     * @Route("/contents", name="contents_index")
+     * @Route("/", name="contents_index")
      */
     public function index(ContentRepository $repo)
     {
@@ -32,7 +40,7 @@ class ContentController extends AbstractController
     /**
      * create content
      *
-     * @Route("/contents/new", name="contents_create")
+     * @Route("/new", name="contents_create")
      * 
      * @return Response
      */
@@ -81,7 +89,7 @@ class ContentController extends AbstractController
     /**
      * Edit content
      *
-     * @Route("/contents/{slug}/edit", name="contents_edit")
+     * @Route("/{slug}/edit", name="contents_edit")
      * 
      * @return Response
      */
@@ -117,9 +125,9 @@ class ContentController extends AbstractController
                 "Les modifications du serious game <strong>{$content->getTitle()}</strong> ont bien été enregistrées !"            
             );
             
-            //return $this->redirectToRoute('contents_show', [
-            //    'slug' => $content->getSlug()
-            //]);
+            return $this->redirectToRoute('contents_show', [
+                'slug' => $content->getSlug()
+            ]);
         }
 
         return $this->render('content/edit.html.twig', [
@@ -131,7 +139,7 @@ class ContentController extends AbstractController
     /**
      * Play game
      * 
-     * @Route("/contents/{slug}/play", name="contents_play")
+     * @Route("/{slug}/play", name="contents_play")
      * 
      * @return Response
      */
@@ -147,7 +155,7 @@ class ContentController extends AbstractController
     /**
      * Show one content
      * 
-     * @Route("/contents/{slug}", name="contents_show")
+     * @Route("/{slug}", name="contents_show")
      * 
      * @return Response
      */
@@ -162,5 +170,23 @@ class ContentController extends AbstractController
         ]);
     }
 
-    
+    /**
+     * Delete one content
+     * 
+     * @Route("/{slug}/delete", name="contents_delete")
+     * @Security("is_granted('ROLE_ADMIN')")
+     * @return Response
+    */
+    public function delete(Content $content, ObjectManager $manager)
+    {
+        $manager->remove($content);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "Le serious game <strong>{$content->getTitle()}</strong> ont bien été supprimé !"            
+        );
+
+        return $this->redirectToRoute('contents_index');
+    }
 }

@@ -6,13 +6,40 @@
 
 {% block body %}
     <div class="container">
-        <h1>Modifier le serious game : {{ content.title }}</h1>
+        <h1 class="my-5">Modifier le serious game : {{ content.title }}</h1>
 
         {{ form_start(form) }}
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h2 class="alert-heading">Informations générales</h2>
+                        <hr>
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.slug) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.content) }}
+                    </div>
+                    <div class="alert alert-light">
+                        <h2 class="alert-heading">Configuration</h2>
+                        <hr>
+                        {{ form_row(form.gameFile) }}
+                        {{ form_row(form.active) }}
+                        {{ form_row(form.public) }}
+                    </div>                    
+                </div>
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h2 class="alert-heading">Images</h2>
+                        <hr>
+                        {{ form_row(form.coverImage) }}
+                        {{ form_row(form.images) }}
+                    </div>
+                </div>
+            </div>
 
-        {{ form_widget(form) }}
-
-        <button type="submit" class="btn btn-primary">Edit</button>
+        <div class="row mb-3">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Enregister les modifications</button>
+        </div>
 
         {{ form_end(form) }}
     </div>

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les jeux{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <h1 class="my-3">Tous les jeux</h1>
+
+        <div class="row">
+            {% if contents is not empty %}
+                {% for content in contents %}
+                    {% set url = path('contents_show', {'slug': content.slug }) %}
+                    <div class="col-md-4">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header text-center">
+                                <p>{{ content.title }}</p>
+                            </div>
+                            <a href="{{ url }}">
+                                <img src="{{ content.coverImage }}" alt="image jeux-1"
+                                    style="height: 200px; width: 100%; display: block;">
+                            </a>
+
+                            <div class="card-body">
+                                <h4 class="card-title">{{ content.title }}</h4>
+                                <p class="card-text">
+                                    {{ content.description }}
+                                </p>
+                                <a href="{{ url }}" class="btn btn-info float-right">En savoir plus</a>
+                            </div>
+                        </div>
+                    </div> 
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-warning">
+                    <h2>Aucun Serious game dispo</h2>
+                </div>
+            {% endif  %}
+
+        </div>
+    </div>
+{% endblock %}
