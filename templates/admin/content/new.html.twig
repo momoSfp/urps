@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edition d'un serious game{% endblock %}
+{% block title %}Creation d'un serious game{% endblock %}
 
-{% form_theme form 'content/_collection.html.twig' %}
+{% form_theme form 'admin/content/_collection.html.twig' %}
 
 {% block body %}
     <div class="container">
-        <h1 class="my-5">Modifier le serious game : {{ content.title }}</h1>
+        <h1 class='my-5'>Créer un nouveau serious game</h1>
 
         {{ form_start(form) }}
             <div class="row">
@@ -36,15 +36,15 @@
                     </div>
                 </div>
             </div>
+        {{ form_widget(form) }}
 
         <div class="row mb-3">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Enregister les modifications</button>
+            <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Créer un nouveau sérious game</button>
         </div>
 
         {{ form_end(form) }}
     </div>
 {% endblock %}
-
 
 {% block javascripts %}
     <script src="/js/content.js"></script>

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration serious game{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1 class="my-5">Gestion des serious game</h1>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Créer le</th>
+                    <th>Dérnière modification</th>
+                    <th>Statut</th>
+                    <th>Public</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for content in contents %}
+                    <tr>
+                        <th>{{ content.id }}</th>
+                        <th>{{ content.title }}</th>
+                        <th>{{ content.createdAt | date("d/m/Y H:i", "Europe/Paris") }}</th>
+                        <th class="text-center"> 
+                            {% if content.lastUpdateAt is null %}  
+                                <p >~</p>
+                            {% else %}
+                                {{ content.lastUpdateAt | date("d/m/Y  H:i", "Europe/Paris") }}
+                            {% endif %}
+                        </th>
+                        <th class="text-center">
+                            {% if content.active == true %}
+                                <span class="badge badge-pill badge-success">&nbsp</span> active
+                            {% else %}
+                                <span class="badge badge-pill badge-danger">&nbsp</span> désactivé
+                            {% endif %}
+                        </th>
+                        <th>
+                            {% if content.public == true %}
+                                <span class="badge badge-pill badge-success">&nbsp</span> active
+                            {% else %}
+                                <span class="badge badge-pill badge-danger">&nbsp</span> désactivé
+                            {% endif %}
+                        </th>
+                        <th>
+                            <a href="{{ path('admin_contents_edit', {'id': content.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
+                            <form action="{{ path('admin_contents_delete', {'id': content.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ content.id) }}">
+                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            </form>
+                        </th>
+                    </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+    </div>
+{% endblock %}
+

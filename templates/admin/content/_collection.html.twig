@@ -24,14 +24,27 @@
         <div class="row">
             <div class="col-10">
                 <div class="row">
-                    <div class="col">
-                        {{ form_widget(form.url) }}
-                        {{ form_errors(form.url) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(form.caption) }}
-                        {{ form_errors(form.caption) }}
-                    </div>
+                    {% if value %}
+                        <div class="col">
+                                <img src="{{ value.url }}" class="img-fluid" alt="">
+                        </div>                                  
+                        <div class="col">
+                            {{ form_widget(form.url) }}
+                            {{ form_errors(form.url) }}
+
+                            {{ form_widget(form.caption) }}
+                            {{ form_errors(form.caption) }}
+                        </div>
+                    {% else %}
+                        <div class="col">
+                            {{ form_widget(form.url) }}
+                            {{ form_errors(form.url) }}
+                        </div>                                  
+                        <div class="col">
+                            {{ form_widget(form.caption) }}
+                            {{ form_errors(form.caption) }}
+                        </div>                        
+                    {% endif %}   
                 </div>            
             </div>
             <div class="col-2">

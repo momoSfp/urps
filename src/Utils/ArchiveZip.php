@@ -17,6 +17,9 @@ class ArchiveZip
         $pathExtract = $this->targetDir . '/public/games/extract/';
 
         $zip = new \ZipArchive;
+        
+        sleep(1);
+        
         $res = $zip->open($path . $originallName);
         
         if($res === true)
