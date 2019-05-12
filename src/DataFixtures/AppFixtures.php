@@ -6,6 +6,7 @@ use Faker\Factory;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Tutor;
 use App\Entity\Content;
 use App\Entity\ParticipateContent;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -25,12 +26,19 @@ class AppFixtures extends Fixture
     {
         $faker   = Factory::create('Fr-fr');
 
-        // make user
+        // make Role admin
         $adminRole = new Role();
         $adminRole->setTitle("ROLE_ADMIN");
 
         $manager->persist($adminRole);
 
+        // make Role admin
+        $tutorRole = new Role();
+        $tutorRole->setTitle("ROLE_TUTOR");
+
+        $manager->persist($tutorRole);
+
+        // make user admin
         $adminUser = new User();
             
         $password = $this->encoder->encodePassword($adminUser, 'admin');
@@ -43,6 +51,26 @@ class AppFixtures extends Fixture
         
         $manager->persist($adminUser);
 
+        // make user tutor
+        $tutorUser = new User();
+            
+        $password = $this->encoder->encodePassword($tutorUser, 'tutor');
+
+        $tutorUser->setFirstname("tutor")
+             ->setLastname("tutor")
+             ->setEmail("tutor@tutor.fr")
+             ->setPassword($password)
+             ->addUserRole($tutorRole);
+        
+        $manager->persist($tutorUser);
+
+        $tutor = new tutor();
+        $tutor->setPostcode("13015")
+            ->setUserRelation($tutorUser);
+
+        $manager->persist($tutor);
+
+        // make all users
         $users = [];
 
         for($i = 1; $i <= 5; $i++)
@@ -56,6 +84,11 @@ class AppFixtures extends Fixture
                  ->setEmail($faker->email)
                  ->setPassword($password);
             
+            if ($i % 2 == 1)
+            {
+                $user->setTutor($tutor);
+            }
+
             $manager->persist($user);
 
             $users[] = $user;
@@ -115,6 +148,7 @@ class AppFixtures extends Fixture
             $manager->persist($participateContent);
         }
 
+        
         $manager->flush();
     }
 }

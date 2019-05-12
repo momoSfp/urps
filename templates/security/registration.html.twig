@@ -2,9 +2,15 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block stylesheets %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% form_theme form _self %}
+
 {% block header %}{% endblock %}
 
-{% block body %}
+{% block body %} 
     <div class="container">
         <h1 class='my-5'>Inscrivez vous sur notre site !</h1>
             {{ form_start(form) }}
@@ -22,14 +28,16 @@
                             <hr>
                             {{ form_row(form.password) }}
                             {{ form_row(form.passwordConfirm) }}
-                        </div>                   
+                            {{ form_row(form.termsAccepted) }}
+                        </div>                
                     </div>
                     <div class="col">
                         <div class="alert alert-light">
                             <h2 class="alert-heading">Questionnaire</h2>
                             <hr>
                             <p>À VENIR</p>
-                            <h4>Médecin traitant</h4>
+                            <h2 class="alert-heading">{{ form_label(form.tutor) }}</h2>
+                            {{ form_row(form.tutor) }}
                         </div>            
                     </div>
                 </div>
@@ -38,8 +46,16 @@
     </div>            
 {% endblock %}
 
+{% block _registration_tutor_row %}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+{% endblock %}
+
 {% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
     <script>
-        
+        $(document).ready(function() {
+            $('#registration_tutor').select2();
+        });
     </script>
 {% endblock %}

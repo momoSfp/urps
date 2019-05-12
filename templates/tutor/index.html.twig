@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration serious game{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1 class="my-5">Gestion des patients</h1>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>email</th>
+                    <th>Date de création</th>
+                    <th>Date dernière connexion</th>
+                    <th>Active</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in tutor.users %}
+                    <tr>
+                        <th>{{ user.Lastname }}</th>
+                        <th>{{ user.Firstname }}</th>
+                        <th>{{ user.email }}</th>
+                        <th>{{ user.createdAt | date("d/m/Y H:i", "Europe/Paris") }}</th>
+                        <th class="text-center"> 
+                            {% if user.updatedAt is null %}  
+                                <p >~</p>
+                            {% else %}
+                                {{ user.updatedAt | date("d/m/Y  H:i", "Europe/Paris") }}
+                            {% endif %}
+                        </th>
+                        <th>
+                            {% if user.active == true %}
+                                <span class="badge badge-pill badge-success">&nbsp</span> active
+                            {% else %}
+                                <span class="badge badge-pill badge-danger">&nbsp</span> désactivé
+                            {% endif %}
+                        </th>
+                        <th>
+                            <a href="{{ path('admin_contents_edit', {'id': user.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
+                            <form action="{{ path('admin_contents_delete', {'id': user.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            </form>
+                        </th>
+                    </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+    </div>
+{% endblock %}
+

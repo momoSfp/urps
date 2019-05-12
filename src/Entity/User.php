@@ -86,7 +86,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $UpdatedAt;
+    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ParticipateContent", mappedBy="user")
@@ -102,6 +102,16 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
      */
     private $userRoles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tutor", inversedBy="users")
+     */
+    private $tutor;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Tutor", mappedBy="userRelation", cascade={"persist", "remove"})
+     */
+    private $tutorRelation;
 
     public function __construct()
     {
@@ -234,6 +244,11 @@ class User implements UserInterface
         return $this->firstname . " " . $this->lastname;
     }
 
+    public function getTutorFullname()
+    {
+        return "Dr " . $this->firstname . " " . $this->lastname . " (" . $this->tutorRelation->getPostcode() . ")" ;
+    }
+
     public function getActive(): ?bool
     {
         return $this->active;
@@ -260,12 +275,12 @@ class User implements UserInterface
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->UpdatedAt;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $UpdatedAt): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->UpdatedAt = $UpdatedAt;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -324,6 +339,35 @@ class User implements UserInterface
         if ($this->userRoles->contains($userRole)) {
             $this->userRoles->removeElement($userRole);
             $userRole->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getTutor(): ?Tutor
+    {
+        return $this->tutor;
+    }
+
+    public function setTutor(?Tutor $tutor): self
+    {
+        $this->tutor = $tutor;
+
+        return $this;
+    }
+
+    public function getTutorRelation(): ?Tutor
+    {
+        return $this->tutorRelation;
+    }
+
+    public function setTutorRelation(Tutor $tutorRelation): self
+    {
+        $this->tutorRelation = $tutorRelation;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $tutorRelation->getUserRelation()) {
+            $tutorRelation->setUserRelation($this);
         }
 
         return $this;
