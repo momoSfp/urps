@@ -70,6 +70,25 @@ class AppFixtures extends Fixture
 
         $manager->persist($tutor);
 
+        // make user tutor
+        $tutorUser1 = new User();
+            
+        $password = $this->encoder->encodePassword($tutorUser1, 'trucmuch');
+
+        $tutorUser1->setFirstname("george")
+             ->setLastname("trucmuch")
+             ->setEmail("george@trucmuch.fr")
+             ->setPassword($password)
+             ->addUserRole($tutorRole);
+        
+        $manager->persist($tutorUser1);
+
+        $tutor1 = new tutor();
+        $tutor1->setPostcode("97067")
+            ->setUserRelation($tutorUser1);
+
+        $manager->persist($tutor1);
+
         // make all users
         $users = [];
 
@@ -88,6 +107,10 @@ class AppFixtures extends Fixture
             {
                 $user->setTutor($tutor);
             }
+            else
+            {
+                $user->setTutor($tutor1);
+            }
 
             $manager->persist($user);
 
@@ -98,7 +121,7 @@ class AppFixtures extends Fixture
 
         $contens = [];
 
-        for($i = 1; $i <= 10; $i++)
+        for($i = 1; $i <= 3; $i++)
         {
             $content = new Content;
 
@@ -115,6 +138,7 @@ class AppFixtures extends Fixture
                 ->setActive(true)
                 ->setPublic(false)
                 ->setLink("https:")
+                ->setQuestion($title . " ?")                
                 ->setFileName("test");
 
             for($j = 1; $j <= mt_rand(2, 4); $j++)

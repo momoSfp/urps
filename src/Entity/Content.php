@@ -114,11 +114,22 @@ class Content
      */
     private $participateContents;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $question;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="recommendedContent")
+     */
+    private $recommendForUsers;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->participateContents = new ArrayCollection();
+        $this->recommendForUsers = new ArrayCollection();
     }
 
     /**
@@ -357,6 +368,46 @@ class Content
             if ($participateContent->getContent() === $this) {
                 $participateContent->setContent(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getQuestion(): ?string
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(string $question): self
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getRecommendForUsers(): Collection
+    {
+        return $this->recommendForUsers;
+    }
+
+    public function addRecommendForUser(User $recommendForUser): self
+    {
+        if (!$this->recommendForUsers->contains($recommendForUser)) {
+            $this->recommendForUsers[] = $recommendForUser;
+            $recommendForUser->addRecommendedContent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecommendForUser(User $recommendForUser): self
+    {
+        if ($this->recommendForUsers->contains($recommendForUser)) {
+            $this->recommendForUsers->removeElement($recommendForUser);
+            $recommendForUser->removeRecommendedContent($this);
         }
 
         return $this;

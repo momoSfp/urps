@@ -29,6 +29,7 @@
                 <input type="text" id="email" class="fadeIn second" name="_username" placeholder="Adresse email" value="{{ last_username }}"
                 required>
                 <input type="password" id="password" class="fadeIn third" name="_password" placeholder="Mot de passe" required>
+                <a class='fadeIn fourth' style="display: block; text-align: right; margin-right:2.5rem" href="{{ path('security_forgotten_password') }}">Mot de passe oublié ?</a>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
                 <input type="submit" class="fadeIn fourth" value="Connexion !">
             </form>

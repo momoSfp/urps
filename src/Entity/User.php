@@ -60,7 +60,7 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="vous devez renseigner un mot de passe") 
      * @Assert\Length(
-     *      min = "5",
+     *      min = "6",
      *      max = "70",
      *      minMessage = "Le mot de passe doit comporter au moins {{ limit }} caractères.",
      *      maxMessage = "Le mot de passe ne doit pas comporter plus de {{ limit }} caractères."
@@ -113,12 +113,23 @@ class User implements UserInterface
      */
     private $tutorRelation;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Content", inversedBy="recommendForUsers")
+     */
+    private $recommendedContent;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $resetToken;
+
     public function __construct()
     {
         $this->participateContents = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->active = true;
         $this->userRoles = new ArrayCollection();
+        $this->recommendedContent = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -369,6 +380,44 @@ class User implements UserInterface
         if ($this !== $tutorRelation->getUserRelation()) {
             $tutorRelation->setUserRelation($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Content[]
+     */
+    public function getRecommendedContent(): Collection
+    {
+        return $this->recommendedContent;
+    }
+
+    public function addRecommendedContent(Content $recommendedContent): self
+    {
+        if (!$this->recommendedContent->contains($recommendedContent)) {
+            $this->recommendedContent[] = $recommendedContent;
+        }
+
+        return $this;
+    }
+
+    public function removeRecommendedContent(Content $recommendedContent): self
+    {
+        if ($this->recommendedContent->contains($recommendedContent)) {
+            $this->recommendedContent->removeElement($recommendedContent);
+        }
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }

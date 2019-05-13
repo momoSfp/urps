@@ -33,12 +33,31 @@
                     </div>
                     <div class="col">
                         <div class="alert alert-light">
-                            <h2 class="alert-heading">Questionnaire</h2>
+                            <h2 class="alert-heading">Questionnaire(s)</h2>
                             <hr>
-                            <p>À VENIR</p>
+                            <fieldset class="form-group">
+                                {% for content in contents %}
+                                    <legend>{{ content.question }}</legend>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="question-{{ content.id }}" id="question-{{ content.id }}-{{ loop.index0 }}" value="true" required>
+                                                Vrai
+                                            </label>                                          
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="question-{{ content.id }}" id="question-{{ content.id }}-{{ loop.index }}" value="false" required>
+                                                Faux
+                                            </label>                                          
+                                        </div>
+                                {% endfor %}
+                            </fieldset>                            
+                        </div>
+                        <div class="alert alert-light">
                             <h2 class="alert-heading">{{ form_label(form.tutor) }}</h2>
+                            <hr>
                             {{ form_row(form.tutor) }}
-                        </div>            
+                        </div>                                 
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirmez l'inscription</button>         

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190507102830 extends AbstractMigration
+final class Version20190512143923 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,10 @@ final class Version20190507102830 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE content CHANGE filename file_name VARCHAR(255) NOT NULL');
+        $this->addSql('CREATE TABLE user_content (user_id INT NOT NULL, content_id INT NOT NULL, INDEX IDX_A6C82EA3A76ED395 (user_id), INDEX IDX_A6C82EA384A0A3ED (content_id), PRIMARY KEY(user_id, content_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE user_content ADD CONSTRAINT FK_A6C82EA3A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE user_content ADD CONSTRAINT FK_A6C82EA384A0A3ED FOREIGN KEY (content_id) REFERENCES content (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE user DROP recommended_content');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +33,7 @@ final class Version20190507102830 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE content CHANGE file_name filename VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
+        $this->addSql('DROP TABLE user_content');
+        $this->addSql('ALTER TABLE user ADD recommended_content INT DEFAULT NULL');
     }
 }
