@@ -64,7 +64,7 @@ class SecurityController extends AbstractController
 
             for ($i = 0; $i < $countContents; $i++) 
             {
-                if ($request->request->get('question-'. strval($contents[$i]->getId())))
+                if ($request->request->get('question-'. strval($contents[$i]->getId())) === "true")
                 {
                     $user->addRecommendedContent($contents[$i]);
                 }                

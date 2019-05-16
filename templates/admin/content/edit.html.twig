@@ -1,10 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Edition d'un serious game{% endblock %}
 
 {% form_theme form 'admin/content/_collection.html.twig' %}
 
-{% block body %}
+{% block main %}
     <div class="container">
         <h1 class="my-5">Modifier le serious game : {{ content.title }}</h1>
 

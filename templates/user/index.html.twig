@@ -3,7 +3,7 @@
 {% block title %}Page de {{ user.fullname }}{% endblock %}
 
 
-{% block body %}
+{% block main %}
     <div class="container">
         <h1>Profil de {{ user.fullname }}</h1>
         {% if user is same as(app.user) %}

@@ -2,61 +2,192 @@
 
 {% block title %}page d'acceuil{% endblock %}
 
-{% block body %}
-    <div class="container mt-3">
-        <div class="jumbotron">
-            <h1 class="display-3">Lorem, ipsum dolor.</h1>
-            <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero quos nesciunt ullam ratione laboriosam eveniet odio aperiam alias voluptatem nisi obcaecati fugiat, sapiente a! Voluptatum illo veritatis dicta exercitationem aspernatur.</p>
-            <hr class="my-4">
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="#" role="button">Lorem, ipsum.</a>
-            </p>
-        </div>
-    
-        <h1 class="mt-3 mb-3">Recommandé pour vous</h2>
-        <div class="row">
-            {% for content in user.recommendedContent %}
-                {% set url = path('contents_show', {'slug': content.slug }) %}
-                <div class="col-md-4">
-                    <div class="card bg-light mb-3">
-                        <div class="card-header text-center">
-                            <p>{{ content.title }}</p>
-                        </div>
-                        <a href="{{ url }}">
-                            <img src="{{ content.coverImage }}" alt="image jeux-1"
-                                style="height: 200px; width: 100%; display: block;">
-                        </a>
-                        <div class="card-body">
-                            <h4 class="card-title">{{ content.title }}</h4>
-                            <p class="card-text">
-                                {{ content.description }}
-                            </p>
-                            <a href="{{ url }}" class="btn btn-info float-right">En savoir plus</a>
-                        </div>
-                    </div>
-                </div> 
-            {% endfor %}
-        </div>
+{% block stylesheets %}
+  <!-- Plugin CSS -->
+    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/home.css">
+{% endblock %}
 
-        <h1 class="mt-3 mb-3">Les derniers serious game</h2>
-        
-        <div class="row">
-            {% for content in user.recommendedContent %}
-                {% set url = path('contents_show', {'slug': content.slug }) %}
-                <div class="col">
-                    <div class="card border-secondary mb-3">
-                        <div class="card-body">
-                            <h4 class="card-title">{{ content.title }}</h4>
-                            <hr>
-                            <div class="card-text">
-                                <img src="{{ content.coverImage }}" alt="image jeux 1" class="float-left mr-3" style="height: 200px; width: 100%; display: block;">
-                                <p class="float-left mr-3">{{ content.description }}</p>
-                                <a href="{{ url }}" class="btn btn-success float-right">En savoir plus</a>
+{% block main %}
+    
+    <!-- Header -->
+    <header class="masthead bg-primary-custom text-white text-center">
+        <div class="container">
+            <h1 class="text-uppercase mb-0">Plateforme ETP</h1>
+            <hr class="star-light">
+            <h2 class="font-weight-light mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, ratione?</h2>
+        </div>
+    </header>
+
+    <!-- Recommended Grid Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <h2 class="text-center text-uppercase text-secondary mb-0">Recommandé</h2>
+            <hr class="star-dark mb-5">
+            <div class="row">
+                {% if user.recommendedContent is not empty %}
+                    {% for content in user.recommendedContent %}
+                        {% set url = path('contents_show', {'slug': content.slug }) %}
+
+                        <div class="col-md-6 col-lg-4">
+                            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-{{ loop.index }}">
+                                <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+                                    <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                                        <i class="fas fa-search-plus fa-3x"></i>
+                                    </div>
+                                </div>
+                                <img class="img-fluid" src="{{ content.coverImage }}" alt="couverture serious game {{ content.title }}">
+                            </a>
+                        </div>
+
+                        <!-- Portfolio Modals -->
+
+                        <!-- Portfolio Modal {{ loop.index }} -->
+                        <div class="portfolio-modal mfp-hide" id="portfolio-modal-{{ loop.index }}">
+                            <div class="portfolio-modal-dialog bg-white">
+                                <a class="close-button d-md-block portfolio-modal-dismiss" href="#">
+                                    <i class="fa fa-3x fa-times"></i>
+                                </a>
+                                <div class="container text-center">
+                                    <div class="row">
+                                        <div class="col-lg-8 mx-auto">
+                                            <h2 class="text-secondary text-uppercase mb-0">{{ content.title }}</h2>
+                                            <hr class="star-dark mb-5">
+
+                                            <div id="carouselPresentation" class="carousel slide mt-3" data-ride="carousel">
+                                                <ol class="carousel-indicators">
+                                                    {% for image in content.images %}
+                                                        <li data-target="#carouselPresentation" data-slide-to={{ loop.index0 }} {% if loop.first %}class="active"{% endif%}></li>
+                                                    {% endfor %}    
+                                                </ol>
+                                                <div class="carousel-inner">
+                                                    {% for image in content.images %}
+                                                        <div class="carousel-item {% if loop.first %}active{% endif%}">
+                                                            <img class="d-block w-100" src="{{ image.url }}" alt="{{ image.caption }}">
+                                                        </div>
+                                                    {% endfor %}    
+                                                </div>
+                                                <a class="carousel-control-prev" href="#carouselPresentation" role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a class="carousel-control-next" href="#carouselPresentation" role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </div>
+                                            
+                                            <p class="mb-5 mt-3">{{ content.content }}</p>
+                                            <a class="btn btn-success btn-lg rounded-pill" href="{{ path('contents_play', {'slug': content.slug }) }}">
+                                            <i class="fa fa-close"></i>
+                                                Voir le jeu
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning mt-3 mx-auto">
+                        <h4 class="alert-heading">Vous n'avez aucun serious game recommandé</h4>
+                    </div>
+                {% endif %}                    
+            </div>
+        </div>
+    </section>
+
+    <!-- All Grid Section -->
+    <section class="portfolio bg-primary-custom" id="portfolio">
+        <div class="container">
+            <h2 class="text-center text-uppercase text-white mb-0">Tous les jeux</h2>
+            <hr class="star-light mb-5">
+            <div class="row">
+                {% for content in contents %}
+                    {% set url = path('contents_show', {'slug': content.slug }) %}
+                    <div class="col-md-6 col-lg-4">
+                        <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-{{ loop.index }}">
+                            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+                                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                                    <i class="fas fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ content.coverImage }}" alt="couverture serious game {{ content.title }}">
+                        </a>
+                    </div>
+
+                    <!-- Portfolio Modals -->
+
+                    <!-- Portfolio Modal {{ loop.index }} -->
+                    <div class="portfolio-modal mfp-hide" id="portfolio-modal-{{ loop.index }}">
+                        <div class="portfolio-modal-dialog bg-white">
+                            <a class="close-button d-md-block portfolio-modal-dismiss" href="#">
+                                <i class="fa fa-3x fa-times"></i>
+                            </a>
+                            <div class="container text-center">
+                                <div class="row">
+                                    <div class="col-lg-8 mx-auto">
+                                        <h2 class="text-secondary text-uppercase mb-0">{{ content.title }}</h2>
+                                        <hr class="star-dark mb-5">
+
+                                        <div id="carouselPresentation" class="carousel slide mt-3" data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                                {% for image in content.images %}
+                                                    <li data-target="#carouselPresentation" data-slide-to={{ loop.index0 }} {% if loop.first %}class="active"{% endif%}></li>
+                                                {% endfor %}    
+                                            </ol>
+                                            <div class="carousel-inner">
+                                                {% for image in content.images %}
+                                                    <div class="carousel-item {% if loop.first %}active{% endif%}">
+                                                        <img class="d-block w-100" src="{{ image.url }}" alt="{{ image.caption }}">
+                                                    </div>
+                                                {% endfor %}    
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselPresentation" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselPresentation" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                        
+                                        <p class="mb-5 mt-3">{{ content.content }}</p>
+                                        <a class="btn btn-success btn-lg rounded-pill" href="{{ path('contents_play', {'slug': content.slug }) }}">
+                                        <i class="fa fa-close"></i>
+                                            Voir le jeu
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>     
-    </div>
+                    </div>                         
+                {% endfor %}     
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <script>
+      // Modal popup$(function () {
+        $('.portfolio-item').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            focus: '#username',
+            modal: true
+        });
+        $(document).on('click', '.portfolio-modal-dismiss', function(e) {
+            e.preventDefault();
+            $.magnificPopup.close();
+        });    
+    </script>
+
 {% endblock %}
