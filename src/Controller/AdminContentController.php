@@ -117,9 +117,7 @@ class AdminContentController extends AbstractController
                 "Les modifications du serious game <strong>{$content->getTitle()}</strong> ont bien été enregistrées !"            
             );
             
-            return $this->redirectToRoute('admin_contents_index', [
-                'slug' => $content->getSlug()
-            ]);
+            return $this->redirectToRoute('admin_contents_index');
         }
 
         return $this->render('admin/content/edit.html.twig', [
@@ -129,7 +127,7 @@ class AdminContentController extends AbstractController
     }
 
     /**
-     * Edit content
+     * delete content
      *
      * @Route("/{id}/delete", name="admin_contents_delete")
      * 
@@ -144,7 +142,7 @@ class AdminContentController extends AbstractController
     
             $this->addFlash(
                 'success',
-                "Le serious game <strong>{$content->getTitle()}</strong> ont bien été supprimé !"            
+                "Le serious game <strong>{$content->getTitle()}</strong> a été supprimé !"            
             );
         }
 

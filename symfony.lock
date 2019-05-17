@@ -123,6 +123,9 @@
     "fzaninotto/faker": {
         "version": "v1.8.0"
     },
+    "isometriks/spam-bundle": {
+        "version": "v1.0.3"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },

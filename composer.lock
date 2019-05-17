@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "03bca7d95d44a2f3f169b51fed7b6dec",
-    "content-hash": "c72878634b33e0bc272129695702a5bc",
+    "hash": "d2e59cad5769ce2310f163bf20721c41",
+    "content-hash": "86498c5bd0173cda3bab31558ce06f83",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1465,6 +1465,49 @@
                 "fixtures"
             ],
             "time": "2018-07-12 10:23:15"
+        },
+        {
+            "name": "isometriks/spam-bundle",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/isometriks/IsometriksSpamBundle.git",
+                "reference": "c0fae403e3b0c097282018c932fedff6d0b94de7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/isometriks/IsometriksSpamBundle/zipball/c0fae403e3b0c097282018c932fedff6d0b94de7",
+                "reference": "c0fae403e3b0c097282018c932fedff6d0b94de7",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/form": "~3.0|~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Isometriks\\Bundle\\SpamBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Craig Blanchette",
+                    "email": "craig.blanchette@gmail.com",
+                    "homepage": "http://isometriks.com"
+                },
+                {
+                    "name": "Patrik Pacin",
+                    "email": "github@exploit.cz",
+                    "homepage": "https://exploit.cz"
+                }
+            ],
+            "description": "Provides spam protection for Symfony3 forms",
+            "keywords": [
+                "spam",
+                "symfony3"
+            ],
+            "time": "2019-04-12 15:42:37"
         },
         {
             "name": "jdorn/sql-formatter",

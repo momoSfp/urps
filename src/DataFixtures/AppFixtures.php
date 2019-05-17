@@ -26,18 +26,6 @@ class AppFixtures extends Fixture
     {
         $faker   = Factory::create('Fr-fr');
 
-        // make Role admin
-        $adminRole = new Role();
-        $adminRole->setTitle("ROLE_ADMIN");
-
-        $manager->persist($adminRole);
-
-        // make Role admin
-        $tutorRole = new Role();
-        $tutorRole->setTitle("ROLE_TUTOR");
-
-        $manager->persist($tutorRole);
-
         // make user admin
         $adminUser = new User();
             
@@ -47,7 +35,7 @@ class AppFixtures extends Fixture
              ->setLastname("admin")
              ->setEmail("admin@admin.fr")
              ->setPassword($password)
-             ->addUserRole($adminRole);
+             ->setRoles(['ROLE_ADMIN']);
         
         $manager->persist($adminUser);
 
@@ -60,7 +48,7 @@ class AppFixtures extends Fixture
              ->setLastname("tutor")
              ->setEmail("tutor@tutor.fr")
              ->setPassword($password)
-             ->addUserRole($tutorRole);
+             ->setRoles(['ROLE_TUTOR']);
         
         $manager->persist($tutorUser);
 
@@ -79,7 +67,7 @@ class AppFixtures extends Fixture
              ->setLastname("trucmuch")
              ->setEmail("george@trucmuch.fr")
              ->setPassword($password)
-             ->addUserRole($tutorRole);
+             ->setRoles(['ROLE_TUTOR']);
         
         $manager->persist($tutorUser1);
 

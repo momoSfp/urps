@@ -2,10 +2,6 @@
 
 {% block title %}Inscription{% endblock %}
 
-{% block stylesheets %}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
-{% endblock %}
-
 {% form_theme form _self %}
 
 {% block header %}{% endblock %}
@@ -21,6 +17,7 @@
                             <hr>
                             {{ form_row(form.firstname) }}
                             {{ form_row(form.lastname) }}
+                            {{ form_row(form.age) }}
                             {{ form_row(form.email) }}
                         </div>
                         <div class="alert alert-light">
@@ -61,7 +58,8 @@
                     </div>
                 </div>
                 <div class="col text-center mb-3">
-                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirmez l'inscription</button>         
+                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirmez l'inscription</button>
+                    <input type="hidden" name="_token" value="{{ csrf_token('create_user_urps')}}">
                 </div>                
         {{ form_end(form) }}        
     </div>            
@@ -73,10 +71,11 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#registration_tutor').select2();
+            $('#registration_tutor').select2({
+                theme: "classic"
+            });
         });
     </script>
 {% endblock %}

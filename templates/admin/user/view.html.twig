@@ -1,27 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}Page de {{ user.fullname }}{% endblock %}
-
+{% block title %}Historique du Patient{% endblock %}
 
 {% block main %}
     <div class="container-fluid">
-        <h1>Profil de {{ user.fullname }}</h1>
-        {% if user is same as(app.user) %}
-            <div class="card mt-3">
-                <div class="card-body">
-                    <div class="row justify-content-md-center align-items-center">
-                        <div class="col-auto text-align">
-                            <a href="{{ path('user_edit') }}" class="btn btn-primary mr-2 mb-2"><i class="far fa-edit fa-lg"></i> Modifier mes informations</a>
-                        </div>
-                        <div class="col-auto text-align">
-                            <a href="{{ path('update_password') }}" class="btn btn-primary mr-2 mb-2"><i class="far fa-edit fa-lg"></i> Modifier mon mot de password</a>
-                        </div>
-                    </div>
-                </div>                              
-            </div>
-        {% endif %}
-        <hr>
-        <h2>Serious game</h2>
+        <h1 class="my-5">Historique du Patient {{ user.fullname }}</h1>
 
         <div class="card mt-3">
             <div class="card-body">
@@ -30,7 +13,7 @@
                         {% for participateContent in user.participateContents %}
                             {% set content = participateContent.content %}
                             {% set url = path('contents_play', {'slug': content.slug }) %}
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="card bg-light mb-3">
                                     <a href="{{ url }}">
                                         <img src="{{ content.coverImage }}" alt="image jeux-1"
@@ -44,7 +27,6 @@
                                         {% for key, value in participateContent.result %}
                                             <p>{{key}} : {{value}}</p>
                                         {% endfor %}
-                                        <a href="{{ url }}" class="btn btn-info">Lancer le jeu</a>
                                     </div>
                                 </div>
                             </div> 
@@ -54,7 +36,7 @@
                     <div class="row justify-content-md-center align-items-center">
                         <div class="col-auto text-align">
                             <div class="alert alert-warning mt-3 mx-auto">
-                                <h4 class="alert-heading">Vous n'avez particier a aucun serious game</h4>
+                                <h4 class="alert-heading">L'utilisateur n'a participer a aucun serious game</h4>
                             </div>
                         </div>
                     </div>   
@@ -62,6 +44,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
-

@@ -89,7 +89,7 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ParticipateContent", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\ParticipateContent", mappedBy="user", orphanRemoval=true)
      */
     private $participateContents;
 
@@ -97,11 +97,6 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
-     */
-    private $userRoles;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tutor", inversedBy="users")
@@ -123,12 +118,16 @@ class User implements UserInterface
      */
     private $resetToken;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $age;
+
     public function __construct()
     {
         $this->participateContents = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->active = true;
-        $this->userRoles = new ArrayCollection();
         $this->recommendedContent = new ArrayCollection();
     }
 
@@ -164,15 +163,10 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->userRoles->toArray();
-
-        $roles = $this->userRoles->map(function($role){
-            return $role->getTitle();
-        })->toArray();
-
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        if (empty($this->roles)) {
+            return ['ROLE_USER'];
+        }
+        return $this->roles;
     }
 
     public function setRoles(array $roles): self
@@ -327,34 +321,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Role[]
-     */
-    public function getUserRoles(): Collection
-    {
-        return $this->userRoles;
-    }
-
-    public function addUserRole(Role $userRole): self
-    {
-        if (!$this->userRoles->contains($userRole)) {
-            $this->userRoles[] = $userRole;
-            $userRole->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserRole(Role $userRole): self
-    {
-        if ($this->userRoles->contains($userRole)) {
-            $this->userRoles->removeElement($userRole);
-            $userRole->removeUser($this);
-        }
-
-        return $this;
-    }
-
     public function getTutor(): ?Tutor
     {
         return $this->tutor;
@@ -418,6 +384,18 @@ class User implements UserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getAge(): ?string
+    {
+        return $this->age;
+    }
+
+    public function setAge(?string $age): self
+    {
+        $this->age = $age;
 
         return $this;
     }

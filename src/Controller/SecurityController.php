@@ -54,49 +54,61 @@ class SecurityController extends AbstractController
 
         $contents = $contentRepo->findAllActive();
 
-        $form = $this->createForm(RegistrationType::class, $user);
+        $form = $this->createForm(RegistrationType::class, $user, [
+            'timed_spam' => true,
+            'timed_spam_min' => 3,
+            'timed_spam_max' => 40,
+            'timed_spam_message' => 'Please wait 3 seconds before submitting',
+        ]);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {    
-            $countContents = count($contents);
-
-            for ($i = 0; $i < $countContents; $i++) 
+            if ($this->isCsrfTokenValid('create_user_urps', $request->get('_token')))
             {
-                if ($request->request->get('question-'. strval($contents[$i]->getId())) === "true")
+                $countContents = count($contents);
+
+                for ($i = 0; $i < $countContents; $i++) 
                 {
-                    $user->addRecommendedContent($contents[$i]);
-                }                
+                    if ($request->request->get('question-'. strval($contents[$i]->getId())) === "true")
+                    {
+                        $user->addRecommendedContent($contents[$i]);
+                    }                
+                }
+    
+                $password = $encoder->encodePassword($user, $user->getPassword());
+    
+                $user->setPassword($password);
+    
+                $manager->persist($user);
+    
+                $manager->flush();
+                
+                $url = $this->generateUrl('home_index', [],UrlGeneratorInterface::ABSOLUTE_URL);
+                
+    
+                $this->addFlash(
+                    'success',
+                    "votre compte a bien été crée !"
+                );
+    
+                $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+                $this->container->get('security.token_storage')->setToken($token);
+                $this->container->get('session')->set('_security_main', serialize($token));
+    
+                $mailer->sendMail(
+                    $mailer->getMailSubjectWelcome(), 
+                    $mailer->getMailBodyWelcome($user, $url),
+                    $user->getEmail()
+                );
+    
+                return $this->redirectToRoute('home_index');
             }
-
-            $password = $encoder->encodePassword($user, $user->getPassword());
-
-            $user->setPassword($password);
-
-            $manager->persist($user);
-
-            $manager->flush();
-            
-            $url = $this->generateUrl('home_index', [],UrlGeneratorInterface::ABSOLUTE_URL);
-            
-
-            $this->addFlash(
-                'success',
-                "votre compte a bien été crée !"
-            );
-
-            $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-            $this->container->get('security.token_storage')->setToken($token);
-            $this->container->get('session')->set('_security_main', serialize($token));
-
-            $mailer->sendMail(
-                $mailer->getMailSubjectWelcome(), 
-                $mailer->getMailBodyWelcome($user, $url),
-                $user->getEmail()
-            );
-
-            return $this->redirectToRoute('home_index');
+            else
+            {
+                return $this->redirectToRoute('security_login');
+            }
         }
 
         return $this->render('security/registration.html.twig', [
@@ -171,7 +183,7 @@ class SecurityController extends AbstractController
 
            if ($user === null) 
            {
-               $this->addFlash('danger', 'Lien ne fonctionne pas');
+               $this->addFlash('danger', 'Mot de passe déja mis à jour avec ce lien<br>(Veuillez cliquez sur "Mot de passe oublié" pour recevoir un nouveau mail)');
                return $this->redirectToRoute('security_login');
             }
 

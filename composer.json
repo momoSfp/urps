@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "cocur/slugify": "^3.2",
         "fzaninotto/faker": "^1.8",
+        "isometriks/spam-bundle": "^1.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.2.*",
         "symfony/console": "4.2.*",

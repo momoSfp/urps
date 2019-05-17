@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
@@ -22,6 +23,19 @@ class RegistrationType extends UtilsType
         $builder
             ->add('firstname', TextType::class, $this->configuration("Prénom", "Votre prénom"))
             ->add('lastname', TextType::class, $this->configuration("Nom", "Votre nom de famille"))
+            ->add('age', ChoiceType::class, $this->configuration("Votre tranche d'âge", "Votre tranche d'âge", 
+                [
+                    'choices'  => [
+                        '30-39' => '30-39',
+                        '40-49' => '40-49',
+                        '50-59' => '50-59',
+                        '60-69' => '60-69',
+                        '70-79' => '70-79',
+                        '80-89' => '80-89',
+                    ], 
+                    'required'  => true,
+                ]
+            ))
             ->add('email', EmailType::class, $this->configuration("Email", "Votre adresse email"))
             ->add('password', PasswordType::class, $this->configuration("Mot de passe", "Choississez un bon mot de passe !"))
             ->add('passwordConfirm', PasswordType::class, $this->configuration("Confirmation de mot de passe", "Veuillez confirmer votre mot de passe"))
