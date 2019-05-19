@@ -1,8 +1,6 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Edition{% endblock %}
-
-{% form_theme form 'admin/content/_collection.html.twig' %}
+{% block title %}Modification des informations personnels{% endblock %}
 
 {% block main %}
     <div class="container ">
@@ -14,17 +12,19 @@
                     <div class="alert alert-light">
                         <h2 class="alert-heading">Informations générales</h2>
                         <hr>
-                        {{ form_row(form.firstname) }}
-                        {{ form_row(form.lastname) }}
-                        {{ form_row(form.age) }}
-                        {{ form_row(form.email) }}
+                        {{ form_row(form.userRelation.lastname) }}
+                        {{ form_row(form.userRelation.firstname) }}
+                        {{ form_row(form.userRelation.email) }}
+
+                        {{ form_row(form.postcode) }}
+
                     </div>   
                 </div>
                 <div class="col">
                     <div class="alert alert-light">
                         <h2 class="alert-heading">Autres informations</h2>
                         <hr>
-                        {{ form_row(form.tutor) }}
+                        {{ form_row(form.adeli) }}
                     </div>            
                 </div>
             </div>
@@ -33,14 +33,4 @@
             </div>                
         {{ form_end(form) }}
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        $(document).ready(function() {
-            $('#user_tutor').select2({
-                theme: "classic"
-            });
-        });
-    </script>
 {% endblock %}

@@ -15,6 +15,11 @@
                             {% set url = path('contents_play', {'slug': content.slug }) %}
                             <div class="col-md-6">
                                 <div class="card bg-light mb-3">
+                                    {% if participateContent.completedAt is not null %}
+                                        <div id="ribbon-container">
+                                            <p id="ribbon-{{ content.slug }}">Terminé le {{ participateContent.completedAt | date("d/m/Y  H:i", "Europe/Paris") }}</p>
+                                        </div>
+                                    {% endif %}
                                     <a href="{{ url }}">
                                         <img src="{{ content.coverImage }}" alt="image jeux-1"
                                             style="height: 200px; width: 100%; display: block;">
@@ -24,6 +29,7 @@
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                         <hr>
                                         <h4 class="card-title">Avancement</h4>
+                                        <p>Premiére connexion le {{ participateContent.createdAt | date("d/m/Y  H:i", "Europe/Paris") }}
                                         {% for key, value in participateContent.result %}
                                             <p>{{key}} : {{value}}</p>
                                         {% endfor %}

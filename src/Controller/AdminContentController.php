@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Content;
+use App\Entity\ParticipateContent;
 use App\Form\ContentType;
 use App\Utils\ArchiveZip;
 use App\Repository\ContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ParticipateContentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -127,6 +129,29 @@ class AdminContentController extends AbstractController
     }
 
     /**
+     * Edit content
+     *
+     * @Route("/{id}/stats", name="admin_contents_stats")
+     * 
+     * @return Response
+     */
+    public function stats(Content $content, ParticipateContentRepository $participateContentRepo)
+    {
+        $participateContents = $participateContentRepo->findBy(['content' => $content]);
+
+        $nbParticipateContents = count($participateContents);
+
+        $percentCompletedGame = $this->gePercentCompletedGame($participateContents, $nbParticipateContents);
+
+        return $this->render('admin/content/stats.html.twig', [
+            'content'               => $content,
+            'nbParticipateContents' => $nbParticipateContents,
+            'participateContents'   => $participateContents,
+            'percentCompletedGame'  => $percentCompletedGame,
+        ]);
+    }
+
+    /**
      * delete content
      *
      * @Route("/{id}/delete", name="admin_contents_delete")
@@ -147,5 +172,25 @@ class AdminContentController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_contents_index');        
-    }     
+    }
+
+    ////////////////////////////// FUNCTION //////////////////////////////
+
+    function gePercentCompletedGame($participateContents, $nbParticipateContents)
+    {
+        $nbCompletedContent = 0;
+
+        foreach ($participateContents as $participateContent)
+        {
+            if ($participateContent->getCompletedAt() != null)
+            {
+                $nbCompletedContent++;
+            }
+        }
+
+        $percentCompleted = ($nbCompletedContent / $nbParticipateContents) * 100;
+        $percentIncompleted = 100 - $percentCompleted;
+        
+        return [$percentIncompleted, $percentCompleted];
+    }
 }

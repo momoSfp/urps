@@ -24,8 +24,7 @@ class ContentType extends UtilsType
         $builder
             ->add('title', TextType::class, $this->configuration('Titre', 'Titre du serious game'))
             ->add('slug', TextType::class, $this->configuration('Lien de la page', 'Lien de la page (optionnel)', [ 'required' => false ]))
-            ->add('description', TextType::class, $this->configuration('Description', 'Une description global du serious game'))
-            ->add('content', TextareaType::class, $this->configuration('Contenu', 'Une description détaillé du serious game'))
+            ->add('description', TextareaType::class, $this->configuration('Description', 'Une description global du serious game'))
             ->add('coverImage', UrlType::class, $this->configuration('Image de couverture', 'Une url d\'image'))
             ->add('gameFile', FileType::class)
             ->add('active', CheckboxType::class, $this->configuration('Activer Le serious game', 'test', [ 'required' => false ]))

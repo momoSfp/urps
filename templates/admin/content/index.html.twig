@@ -6,6 +6,10 @@
     <div class="container-fluid">
         <h1 class="my-5">Gestion des serious game</h1>
 
+        <div class="text-center">
+            <a href="{{ path('admin_contents_create')}}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Ajouter un serious game</a>        
+        </div> 
+
         <table id="contentsTable" class="table table-hover">
             <thead>
                 <tr>
@@ -46,6 +50,7 @@
                             {% endif %}
                         </th>
                         <th>
+                            <a href="{{ path('admin_contents_stats', {'id': content.id}) }}" class="btn btn-info"><i class="fas fa-chart-pie"></i></a>
                             <a href="{{ path('admin_contents_edit', {'id': content.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
                             <form action="{{ path('admin_contents_delete', {'id': content.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ content.id) }}">
@@ -63,14 +68,15 @@
     {{parent()}}
     <script>
         $(document).ready( function () {
-            $('#contentsTable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
+            $('#contentsTable').DataTable({ 
+                dom: 'Bfrtip',
+                buttons: 
+                [
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
                 ]
             });
-        } );
+        });
     </script>
 {% endblock %}

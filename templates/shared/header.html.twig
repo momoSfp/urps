@@ -36,7 +36,13 @@
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Administration
                             </a>
-                        {% endif %}                        
+                        {% endif %}
+                        {% if is_granted('ROLE_TUTOR') %}
+                            <a class="dropdown-item" href="{{ path('tutor_index') }}">
+                                <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Mes patients
+                            </a>
+                        {% endif %}                                                   
                         <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ path('security_logout') }}">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

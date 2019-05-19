@@ -118,7 +118,6 @@ class AppFixtures extends Fixture
             $title       = $faker->sentence();
             $coverImage  = $faker->imageUrl(1000,400);
             $description = $faker->paragraph(2);
-            $contentText = $faker->paragraph(5);
             $datetime    = $faker->dateTimeAD('now', 'Europe/Paris');
 
             $content->setTitle($title)

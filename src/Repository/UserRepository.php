@@ -27,7 +27,6 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('admin', '%"ROLE_ADMIN"%')
             ->setParameter('tutor', '%"ROLE_TUTOR"%')
             ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
@@ -39,7 +38,6 @@ class UserRepository extends ServiceEntityRepository
             ->andWhere('u.roles LIKE :tutor ')
             ->setParameter('tutor', '%"ROLE_TUTOR"%')
             ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;

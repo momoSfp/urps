@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -15,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * Controller used to manage and view user.
  *
  *@Route("/admin/users")
- *@IsGranted("ROLE_ADMIN")
+ *@Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_TUTOR')")
  */
 class AdminUserController extends AbstractController
 {

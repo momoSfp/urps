@@ -36,18 +36,11 @@ class Content
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=5, max=200, minMessage="Une description doit contenir plus de 10 caractères !",
-     * maxMessage="Une description ne peut pas contenir plus de 255 caractères !")     
+     * @ORM\Column(type="text")
+     * @Assert\Length(min=5, max=4000, minMessage="la description du jeux doit contenir plus de 100 caractères !",
+     * maxMessage="Une description ne peut pas contenir plus de 4000 caractères !")     
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\Length(min=5, max=4000, minMessage="le resumé du jeux doit contenir plus de 100 caractères !",
-     * maxMessage="le Resumé du jeux ne peut pas contenir plus de 4000 caractères !")     
-     */
-    private $content;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -185,18 +178,6 @@ class Content
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
 
         return $this;
     }
