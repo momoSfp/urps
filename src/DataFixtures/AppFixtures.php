@@ -54,6 +54,7 @@ class AppFixtures extends Fixture
 
         $tutor = new tutor();
         $tutor->setPostcode("13015")
+            ->setPlainTextPass("test")
             ->setUserRelation($tutorUser);
 
         $manager->persist($tutor);
@@ -73,6 +74,7 @@ class AppFixtures extends Fixture
 
         $tutor1 = new tutor();
         $tutor1->setPostcode("97067")
+            ->setPlainTextPass("test")
             ->setUserRelation($tutorUser1);
 
         $manager->persist($tutor1);

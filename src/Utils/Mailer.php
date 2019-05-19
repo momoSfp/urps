@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Entity\User;
+use App\Entity\Tutor;
 
 class Mailer
 {
@@ -44,6 +45,21 @@ class Mailer
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Nous sommes ravis de vous avoir à bord.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour référence, voici vos informations de connexion:</p>";
         $body .= "<div style='padding-right:30px;padding-left:30px'><table style='table-layout:fixed;border:1px solid #a0a0a2;border-radius:8px;padding:40px 0;margin-top:20px;width:100%;border-collapse:separate;text-align:center'><tbody><tr><td style='vertical-align:middle'><h4 style='margin-bottom:2px;font-size:17px;font-weight:400'>Lien du site : <a href='" . $url . "' style='white-space:nowrap;color:#0576b9' target='_blank'>" . $url . "</a></h4><h4 style='margin-bottom:0;font-size:17px;font-weight:400'></td></tr></tbody></table></div>"; 
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous avez des questions, n'hésitez pas à envoyer un courrier électronique à notre équipe de service à la clientèle truc@truc.fr. (Nous répondons très rapidement.) </p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Merci</p>";        
+        $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
+        $body .= "</div>";
+
+        return $this->getMailTemplate($body);
+    }
+
+    public function getMailTutorBodyWelcome(Tutor $tutor, $url)
+    {
+        $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bienvenue Dr " . $tutor->getUserRelation()->getFirstname() . " " . $tutor->getUserRelation()->getLastname() . ",</h1>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Nous sommes ravis de vous avoir à bord.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour référence, voici vos informations de connexion:</p>";
+        $body .= "<div style='padding-right:30px;padding-left:30px'><table style='table-layout:fixed;border:1px solid #a0a0a2;border-radius:8px;padding:40px 0;margin-top:20px;width:100%;border-collapse:separate;text-align:center'><tbody><tr><td style='vertical-align:middle'><h4 style='margin-bottom:2px;font-size:17px;font-weight:400'>Lien du site : <a href='" . $url . "' style='white-space:nowrap;color:#0576b9' target='_blank'>" . $url . "</a></h4><h4 style='margin-bottom:0;font-size:17px;font-weight:400'>Mot de passe : <strong>" . $tutor->getPlainTextPass() . "</strong></h4></td></tr></tbody></table></div>"; 
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous avez des questions, n'hésitez pas à envoyer un courrier électronique à notre équipe de service à la clientèle truc@truc.fr. (Nous répondons très rapidement.) </p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Merci</p>";        
         $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";

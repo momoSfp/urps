@@ -100,6 +100,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tutor", inversedBy="users")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $tutor;
 
@@ -127,6 +128,7 @@ class User implements UserInterface
     {
         $this->participateContents = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         $this->active = true;
         $this->recommendedContent = new ArrayCollection();
     }

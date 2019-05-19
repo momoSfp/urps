@@ -25,6 +25,7 @@ class Tutor
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="tutor")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $users;
 
@@ -33,6 +34,16 @@ class Tutor
      * @ORM\JoinColumn(nullable=false)
      */
     private $userRelation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adeli;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $plainTextPass;
 
     public function __construct()
     {
@@ -95,6 +106,30 @@ class Tutor
     public function setUserRelation(User $userRelation): self
     {
         $this->userRelation = $userRelation;
+
+        return $this;
+    }
+
+    public function getAdeli(): ?string
+    {
+        return $this->adeli;
+    }
+
+    public function setAdeli(?string $adeli): self
+    {
+        $this->adeli = $adeli;
+
+        return $this;
+    }
+
+    public function getPlainTextPass(): ?string
+    {
+        return $this->plainTextPass;
+    }
+
+    public function setPlainTextPass(string $plainTextPass): self
+    {
+        $this->plainTextPass = $plainTextPass;
 
         return $this;
     }

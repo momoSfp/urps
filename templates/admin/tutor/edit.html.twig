@@ -1,0 +1,38 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edition d'un tuteur{% endblock %}
+
+{% form_theme form 'admin/content/_collection.html.twig' %}
+
+{% block main %}
+    <div class="container ">
+        <h1 class='my-5'>Modification des informations personnels</h1>
+
+        {{ form_start(form) }}
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h2 class="alert-heading">Informations générales</h2>
+                        <hr>
+                        {{ form_row(form.userRelation.lastname) }}
+                        {{ form_row(form.userRelation.firstname) }}
+                        {{ form_row(form.userRelation.email) }}
+
+                        {{ form_row(form.postcode) }}
+
+                    </div>   
+                </div>
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h2 class="alert-heading">Autres informations</h2>
+                        <hr>
+                        {{ form_row(form.adeli) }}
+                    </div>            
+                </div>
+            </div>
+            <div class="col text-center mb-3">
+                <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Mise a jour</button>         
+            </div>                
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration tuteur{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+        <h1 class="my-5">Gestion des tuteurs</h1>
+        
+        <div class="text-center">
+            <a href="{{ path('admin_tutors_create')}}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Ajouter un tuteur</a>        
+        </div> 
+
+        <table id="usersTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Adeli</th>
+                    <th>Date de création</th>
+                    <th>Dérnière connexion</th>
+                    <th>Nombre de patients</th>
+                    <th>action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <th>{{ user.id }}</th>
+                        <th>{{ user.firstname }}</th>
+                        <th>{{ user.lastname }}</th>
+                        <th>{{ user.tutorRelation.adeli }}</th>
+                        <th>{{ user.createdAt | date("d/m/Y H:i", "Europe/Paris") }}</th>
+                        <th class="text-center"> 
+                            {% if user.updatedAt is null %}  
+                                <p>~</p>
+                            {% else %}
+                                {{ user.updatedAt | date("d/m/Y  H:i", "Europe/Paris") }}
+                            {% endif %}
+                        </th>
+                        <th>{{ user.tutorRelation.users|length  }}</th>
+                        <th>
+                            <a href="{{ path('admin_tutors_view', {'id': user.id}) }}" class="btn btn-primary"><i class="fas fa-users"></i></a>
+                            <a href="{{ path('admin_tutors_edit', {'id': user.tutorRelation.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
+                            <form action="{{ path('admin_tutors_delete', {'id': user.tutorRelation.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.tutorRelation.id) }}">
+                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            </form>
+                        </th>
+                    </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+
+    <script>
+        $(document).ready( function () {
+            $('#usersTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+                ]
+            });
+        } );
+    </script>
+{% endblock %}
