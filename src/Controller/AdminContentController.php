@@ -49,10 +49,12 @@ class AdminContentController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {    
-            
             if ($content->getGameFile() !== null)
             {
+                var_dump($content->getGameFile());
+
                 var_dump($archive->unzipFile($content->getGameFile()->getClientOriginalName()));
+
                 if ($archive->unzipFile($content->getGameFile()->getClientOriginalName()))
                 {
                     // TODO GET LINK 

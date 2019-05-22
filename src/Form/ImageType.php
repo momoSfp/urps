@@ -6,22 +6,17 @@ use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('url', UrlType::Class, [
+            ->add('imageFile', FileType::Class, [
                 'attr' => [
-                    'placeholder' => "Url de l'image"
-                ]
-            ])
-            ->add('caption', TextType::Class, [
-                'attr' => [
-                    'placeholder' => "Titre de l'image"
+                    'placeholder' => "Importer des captures d'écran du sérious game",
+                    'label'       => "Capture écran du sérious game"
                 ]
             ])
         ;

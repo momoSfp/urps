@@ -1,6 +1,5 @@
 {% block file_widget %}
     <input type="file" name="{{full_name}}" class="form-control-file" id="{{id}}" aria-describedby="fileHelp">
-    <small id="fileHelp" class="form-text text-muted">Importer le fichier</small>
 {% endblock %}
 
 {% block _content_images_widget %}
@@ -25,24 +24,17 @@
             <div class="col-10">
                 <div class="row">
                     {% if value %}
-                        <div class="col">
-                                <img src="{{ value.url }}" class="img-fluid" alt="">
+                        <div class="col" style='text-align: center; height: 150px;'>
+                            <img style="max-height:100%" class="img-fluid" src="{{ vich_uploader_asset(value, 'imageFile') }}" alt="">
                         </div>                                  
                         <div class="col">
-                            {{ form_widget(form.url) }}
-                            {{ form_errors(form.url) }}
-
-                            {{ form_widget(form.caption) }}
-                            {{ form_errors(form.caption) }}
+                            {{ form_widget(form.imageFile) }}
+                            {{ form_errors(form.imageFile) }}
                         </div>
                     {% else %}
                         <div class="col">
-                            {{ form_widget(form.url) }}
-                            {{ form_errors(form.url) }}
-                        </div>                                  
-                        <div class="col">
-                            {{ form_widget(form.caption) }}
-                            {{ form_errors(form.caption) }}
+                            {{ form_widget(form.imageFile) }}
+                            {{ form_errors(form.imageFile) }}
                         </div>                        
                     {% endif %}   
                 </div>            

@@ -6,6 +6,7 @@ use App\Entity\Content;
 use App\Form\ImageType;
 use App\Form\UtilsType;
 use Symfony\Component\Form\AbstractType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -24,13 +25,31 @@ class ContentType extends UtilsType
         $builder
             ->add('title', TextType::class, $this->configuration('Titre', 'Titre du serious game'))
             ->add('slug', TextType::class, $this->configuration('Lien de la page', 'Lien de la page (optionnel)', [ 'required' => false ]))
-            ->add('description', TextareaType::class, $this->configuration('Description', 'Une description global du serious game'))
-            ->add('coverImage', UrlType::class, $this->configuration('Image de couverture', 'Une url d\'image'))
-            ->add('gameFile', FileType::class)
+            ->add('description', CKEditorType::class, array(
+                    'required' => true,
+                    'config' => array(
+                        'toolbar' => array(
+                            array(
+                                'Undo', 'Redo', '-', 
+                                'Cut', 'Copy', 'Paste', '-', 
+                                'Link', '-', 
+                                'Bold', 'Italic', 'Strike', 'RemoveFormat', '-',
+                                'NumberedList', 'BulletedList', 'Outdent', 'Indent', '-',
+                                'JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock', '-',
+                                'Maximize'
+                            )
+                        )
+                    )            
+                )
+            )
+            ->add('question', TextType::class, $this->configuration('Question de recommandation', 'La question qui sera posé a l\'utilisateur pour lui recommandé le jeu ou non'))
+            ->add('gameFile', FileType::class, $this->configuration('Fichier contentant le serious game', 'Le fichier au format zip contenant le serious game', ['mapped' => false] ))
+            ->add('coverImageFile', FileType::class, $this->configuration('Image de présentation', 'l\'image qui sera utilisé comme image de couverture'))
             ->add('active', CheckboxType::class, $this->configuration('Activer Le serious game', 'test', [ 'required' => false ]))
             ->add('public', CheckboxType::class, $this->configuration('Rendre public', 'test', [ 'required' => false ]))
             ->add('images', CollectionType::Class, [
                 'entry_type' => ImageType::Class,
+                
                 'allow_add'  => true,
                 'allow_delete'  => true
             ])           

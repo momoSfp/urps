@@ -68,7 +68,7 @@
 
 
 {% for label, messages in app.flashes %}
-    <div class="container popup">
+    <div class="popup">
         <div class="alert alert-dismissible alert-{{ label }}">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {% for message in messages %}

@@ -28,7 +28,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="vous devez renseigner votre prénom") 
      * @Assert\Length(
-     *      min = "2",
+     *      min = "3",
      *      max = "50",
      *      minMessage = "Le prénom doit comporter au moins {{ limit }} caractères.",
      *      maxMessage = "Le prénom ne doit pas comporter plus de {{ limit }} caractères."
@@ -40,7 +40,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="vous devez renseigner votre nom de famille") 
      * @Assert\Length(
-     *      min = "2",
+     *      min = "3",
      *      max = "70",
      *      minMessage = "Le nom de famille doit comporter au moins {{ limit }} caractères.",
      *      maxMessage = "Le nom de famille ne doit pas comporter plus de {{ limit }} caractères."

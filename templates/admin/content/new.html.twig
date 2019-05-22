@@ -17,7 +17,7 @@
                         {{ form_row(form.title) }}
                         {{ form_row(form.slug) }}
                         {{ form_row(form.description) }}
-                        {{ form_row(form.content) }}
+                        {{ form_row(form.question) }}
                     </div>
                     <div class="alert alert-light">
                         <h2 class="alert-heading">Configuration</h2>
@@ -30,18 +30,17 @@
                 <div class="col">
                     <div class="alert alert-light">
                         <h2 class="alert-heading">Images</h2>
-                        <hr>
-                        {{ form_row(form.coverImage) }}
+                        {{ form_row(form.coverImageFile) }}
+
                         {{ form_row(form.images) }}
                     </div>
                 </div>
             </div>
         {{ form_widget(form) }}
 
-        <div class="row mb-3">
-            <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Créer un nouveau sérious game</button>
-        </div>
-
+        <div class="col text-center mb-3">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Créer un nouveau sérious game</button>
+        </div>  
         {{ form_end(form) }}
     </div>
 {% endblock %}

@@ -30,6 +30,7 @@ class Content
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      * @Assert\Length(min=5, max=200, minMessage="Le titre doit contenir plus de 5 caractères !",
      * maxMessage="Le titre ne peut pas contenir plus de 200 caractères !")
      */
@@ -37,13 +38,28 @@ class Content
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      * @Assert\Length(min=5, max=4000, minMessage="la description du jeux doit contenir plus de 100 caractères !",
      * maxMessage="Une description ne peut pas contenir plus de 4000 caractères !")     
      */
     private $description;
 
     /**
+     * @var File
+     * @Vich\UploadableField(mapping="content_coverImage", fileNameProperty="coverImage")
+     * @Assert\NotNull
+     * @Assert\File(
+     *   maxSize = "10M",
+     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{size}} {{ suffix }}.",
+     *   mimeTypes = {"image/png", "image/jpeg", "image/jpg", "image/gif"},
+     *   mimeTypesMessage = "Ce type de fichier n'est pas autorisé. Seulement les fichiers images (gif, png, jpg) sont autorisé."
+     * )
+     */
+    private $coverImageFile;
+
+    /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $coverImage;
 
@@ -64,12 +80,13 @@ class Content
 
     /**
      * @var File
-     * @Vich\UploadableField(mapping="content_game", fileNameProperty="filename")
+     * @Vich\UploadableField(mapping="content_game", fileNameProperty="filename")     
+     * @Assert\NotNull
      * @Assert\File(
      *   maxSize = "100M",
-     *   maxSizeMessage = "Limite de taille dépasse {{size}}",
+     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{size}} {{ suffix }}.",
      *   mimeTypes = {"application/gzip", "application/zip"},
-     *   mimeTypesMessage = "Please upload a valid Zip"
+     *   mimeTypesMessage = "Ce type de fichier n'est pas autorisé. Seulement les fichiers zip sont autorisé."
      * )
      */
     private $gameFile;
@@ -109,6 +126,7 @@ class Content
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $question;
 
@@ -187,7 +205,7 @@ class Content
         return $this->coverImage;
     }
 
-    public function setCoverImage(string $coverImage): self
+    public function setCoverImage($coverImage): self
     {
         $this->coverImage = $coverImage;
 
@@ -295,6 +313,22 @@ class Content
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function setCoverImageFile(?File $coverImageFile = null): void
+    {
+        $this->coverImageFile = $coverImageFile;
+
+        if (null !== $coverImageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->lastUpdateAt = new \DateTime('now');
+        }        
+    }
+
+    public function getCoverImageFile(): ?File
+    {
+        return $this->coverImageFile;
     }
 
     public function setGameFile(?File $gameFile = null): void

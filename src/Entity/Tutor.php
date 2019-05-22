@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TutorRepository")
@@ -19,7 +20,11 @@ class Tutor
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=5, nullable=true)
+     * @Assert\NotBlank 
+     * @Assert\Type(type="numeric", message="Le code postal ne peut être composé que de chiffres.")
+     * @Assert\Length(min="5", max="5", exactMessage="Le code postal doit comporter exactement {{ limit }} chiffres.")
+     *     
      */
     private $postcode;
 

@@ -17,6 +17,7 @@
                         {{ form_row(form.title) }}
                         {{ form_row(form.slug) }}
                         {{ form_row(form.description) }}
+                        {{ form_row(form.question) }}
                     </div>
                     <div class="alert alert-light">
                         <h2 class="alert-heading">Configuration</h2>
@@ -30,15 +31,28 @@
                     <div class="alert alert-light">
                         <h2 class="alert-heading">Images</h2>
                         <hr>
-                        {{ form_row(form.coverImage) }}
+                        <div class="form-group">
+                            <label for="content_coverImageFile" class="required">{{ form_label(form.coverImageFile) }}</label>
+                            <div class='row'>
+                                {% if content.coverImage is not null %}
+                                    <div class="col-3" style='text-align: center; height: 100px;'>
+                                        <img style="max-height:100%" class="img-fluid" src="{{ vich_uploader_asset(content, 'coverImageFile') }}" alt="">
+                                    </div>
+                                {% endif %}                        
+                                <div class="col">                             
+                                    {{ form_widget(form.coverImageFile) }}
+                                    <small>{{ form_help(form.coverImageFile) }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        
                         {{ form_row(form.images) }}
                     </div>
                 </div>
             </div>
-
-            <div class="row mb-3">
+            <div class="col text-center mb-3">
                 <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Enregister les modifications</button>
-            </div>
+            </div>   
 
         {{ form_end(form) }}
     </div>

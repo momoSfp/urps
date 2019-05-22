@@ -38,7 +38,7 @@
                                         <i class="fas fa-search-plus fa-3x"></i>
                                     </div>
                                 </div>
-                                <img class="img-fluid" src="{{ content.coverImage }}" alt="couverture serious game {{ content.title }}">
+                                <img class="img-fluid" src="{{ vich_uploader_asset(content, 'coverImageFile') | imagine_filter('thumb') }}" alt="couverture serious game {{ content.title }}">
                             </a>
                         </div>
 
@@ -65,7 +65,7 @@
                                                 <div class="carousel-inner">
                                                     {% for image in content.images %}
                                                         <div class="carousel-item {% if loop.first %}active{% endif%}">
-                                                            <img class="d-block w-100" src="{{ image.url }}" alt="{{ image.caption }}">
+                                                            <img class="d-block w-100" src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('carousel') }}" alt="capture d'écran numéro {{ loop.index }}">
                                                         </div>
                                                     {% endfor %}    
                                                 </div>
@@ -79,7 +79,7 @@
                                                 </a>
                                             </div>
                                             
-                                            <p class="mb-5 mt-3">{{ content.content }}</p>
+                                            <p class="mb-5 mt-3">{{ content.description | raw}}</p>
                                             <a class="btn btn-success btn-lg rounded-pill" href="{{ path('contents_play', {'slug': content.slug }) }}">
                                             <i class="fa fa-close"></i>
                                                 Voir le jeu
@@ -114,7 +114,8 @@
                                     <i class="fas fa-search-plus fa-3x"></i>
                                 </div>
                             </div>
-                            <img class="img-fluid" src="{{ content.coverImage }}" alt="couverture serious game {{ content.title }}">
+
+                            <img class="img-fluid" src="{{ vich_uploader_asset(content, 'coverImageFile') | imagine_filter('thumb') }}" alt="couverture serious game {{ content.title }}">
                         </a>
                     </div>
 
@@ -141,7 +142,7 @@
                                             <div class="carousel-inner">
                                                 {% for image in content.images %}
                                                     <div class="carousel-item {% if loop.first %}active{% endif%}">
-                                                        <img class="d-block w-100" src="{{ image.url }}" alt="{{ image.caption }}">
+                                                        <img class="d-block w-100" src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('carousel')}}" alt="Capture d'écran numéro {{ loop.index }}">
                                                     </div>
                                                 {% endfor %}    
                                             </div>
@@ -155,7 +156,7 @@
                                             </a>
                                         </div>
                                         
-                                        <p class="mb-5 mt-3">{{ content.content }}</p>
+                                        <div class="mb-5 mt-3">{{ content.description | raw}}</div>
                                         <a class="btn btn-success btn-lg rounded-pill" href="{{ path('contents_play', {'slug': content.slug }) }}">
                                         <i class="fa fa-close"></i>
                                             Voir le jeu

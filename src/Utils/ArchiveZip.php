@@ -13,8 +13,8 @@ class ArchiveZip
 
     public function unzipFile($originallName)
     {
-        $path        = $this->targetDir . '/public/games/';
-        $pathExtract = $this->targetDir . '/public/games/extract/';
+        $path        = $this->targetDir . '/public/uploads/games/';
+        $pathExtract = $this->targetDir . '/public/uploads/games/extract/';
 
         $zip = new \ZipArchive;
         
