@@ -29,6 +29,7 @@ class TutorType extends UtilsType
     {
         $resolver->setDefaults([
             'data_class' => Tutor::class,
+            'cascade_validation' => true,
         ]);
     }
 }

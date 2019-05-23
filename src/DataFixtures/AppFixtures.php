@@ -82,7 +82,7 @@ class AppFixtures extends Fixture
         // make all users
         $users = [];
 
-        for($i = 1; $i <= 5; $i++)
+        for($i = 1; $i <= 500; $i++)
         {
             $user = new User();
             
@@ -123,7 +123,6 @@ class AppFixtures extends Fixture
             $content->setTitle($title)
                 ->setCoverImage($coverImage)
                 ->setDescription($description)
-                ->setContent($contentText)
                 ->setActive(true)
                 ->setPublic(false)
                 ->setLink("https:")
@@ -134,9 +133,8 @@ class AppFixtures extends Fixture
             {
                 $image = new Image();
 
-                $image->setUrl($faker->imageUrl(1000,400))
-                      ->setCaption($faker->sentence())
-                      ->setContent($content);
+                $image->setContent($content)
+                      ->setImageName($faker->imageUrl(1000,400));
 
                 $manager->persist($image);
             }

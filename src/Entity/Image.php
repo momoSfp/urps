@@ -24,6 +24,7 @@ class Image
     /**
      * 
      * @Vich\UploadableField(mapping="content_image", fileNameProperty="imageName", size="imageSize")
+     * @Assert\NotNull(groups={"create"})
      * @Assert\File(
      *   maxSize = "10M",
      *   maxSizeMessage = "Limite de taille dépasse {{size}}",

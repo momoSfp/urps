@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page non trouvée{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block main %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- 404 Error Text -->
+        <div class="text-center">
+            <div class="error mx-auto" data-text="403">403</div>
+            <p class="lead text-gray-800 mb-5">Page non trouvée</p>
+            <p class="text-gray-500 mb-0">Oups ! La page que vous recherchez n'existe pas !</p>
+            <a href="{{ path('home_index')}}">&larr; Retour a l'accueil</a>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+{% endblock %}

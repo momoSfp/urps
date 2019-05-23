@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-10">
                 <div class="row">
-                    {% if value %}
+                    {% if value.id is defined and value.id is not null %}
                         <div class="col" style='text-align: center; height: 150px;'>
                             <img style="max-height:100%" class="img-fluid" src="{{ vich_uploader_asset(value, 'imageFile') }}" alt="">
                         </div>                                  

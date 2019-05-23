@@ -37,6 +37,7 @@ class Tutor
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="tutorRelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     *@Assert\Valid 
      */
     private $userRelation;
 

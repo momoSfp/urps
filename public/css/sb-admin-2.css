@@ -12018,11 +12018,12 @@ body.sidebar-toggled footer.sticky-footer {
 
 .popup
 {
-    position: absolute;
-    margin: 0 100px;
-    left: 0;
-    right: 0;
-    top: 80px;
+  position: absolute;
+  margin: 0 20%;
+  left: 0;
+  right: 0;
+  top: 80px;
+  z-index: 10;
 }
 
 #ribbon-container {

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Content;
 use App\Entity\ParticipateContent;
 use App\Form\ContentType;
-use App\Utils\ArchiveZip;
 use App\Repository\ContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -39,28 +38,19 @@ class AdminContentController extends AbstractController
      * 
      * @return Response
      */
-    public function create(Request $request, ObjectManager $manager, ArchiveZip $archive)
+    public function create(Request $request, ObjectManager $manager)
     {        
         $content = new Content();
 
-        $form = $this->createForm(ContentType::Class, $content);
+        $form = $this->createForm(ContentType::Class, $content, [
+            'validation_groups' => ['Default', 'create']
+            ]
+        );
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {    
-            if ($content->getGameFile() !== null)
-            {
-                var_dump($content->getGameFile());
-
-                var_dump($archive->unzipFile($content->getGameFile()->getClientOriginalName()));
-
-                if ($archive->unzipFile($content->getGameFile()->getClientOriginalName()))
-                {
-                    // TODO GET LINK 
-                    $content->setLink('http://localhost/urps/public/games/extract/gluciboat/index.html');
-                }
-            }
 
             foreach ($content->getImages() as $image) {
                 $image->setContent($content);
@@ -90,7 +80,7 @@ class AdminContentController extends AbstractController
      * 
      * @return Response
      */
-    public function edit(Content $content, Request $request, ObjectManager $manager, ArchiveZip $archive)
+    public function edit(Content $content, Request $request, ObjectManager $manager)
     {
         $form = $this->createForm(ContentType::Class, $content);
 
@@ -99,15 +89,6 @@ class AdminContentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {           
             
-            if ($content->getGameFile() !== null)
-            {
-                if ($archive->unzipFile($content->getGameFile()->getClientOriginalName()))
-                {
-                    // TODO GET LINK 
-                    $content->setLink('http://localhost/urps/public/games/extract/gluciboat/index.html');
-                }
-            }
-
             foreach ($content->getImages() as $image) {
                 $image->setContent($content);
                 $manager->persist($image);

@@ -43,7 +43,7 @@ class ContentType extends UtilsType
                 )
             )
             ->add('question', TextType::class, $this->configuration('Question de recommandation', 'La question qui sera posé a l\'utilisateur pour lui recommandé le jeu ou non'))
-            ->add('gameFile', FileType::class, $this->configuration('Fichier contentant le serious game', 'Le fichier au format zip contenant le serious game', ['mapped' => false] ))
+            ->add('gameFile', FileType::class, $this->configuration('Fichier contentant le serious game', 'Le fichier au format zip contenant le serious game'))
             ->add('coverImageFile', FileType::class, $this->configuration('Image de présentation', 'l\'image qui sera utilisé comme image de couverture'))
             ->add('active', CheckboxType::class, $this->configuration('Activer Le serious game', 'test', [ 'required' => false ]))
             ->add('public', CheckboxType::class, $this->configuration('Rendre public', 'test', [ 'required' => false ]))

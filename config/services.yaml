@@ -24,8 +24,11 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\Utils\ArchiveZip:
+    
+    App\EventListener\UploadListener:
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.post_upload } 
         arguments:
-            $targetDir: '%kernel.project_dir%'
+            $targetDir: '%kernel.project_dir%/web/'                 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
