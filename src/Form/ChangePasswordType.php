@@ -34,6 +34,7 @@ class ChangePasswordType extends AbstractType
             ])
             ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'invalid_message' => 'La confirmation du nouveau MDP doit être identique au nouveau mot de passe.',
                 'constraints' => [
                     new NotBlank(),
                     new Length([
@@ -46,6 +47,7 @@ class ChangePasswordType extends AbstractType
                 ],
                 'second_options' => [
                     'label' => 'Confirmation nouveau mot de passe',
+
                 ],
             ])
         ;

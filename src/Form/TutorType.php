@@ -17,8 +17,8 @@ class TutorType extends UtilsType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('postcode', TextType::class, $this->configuration("Code Postal", "Code postal du cabinet"))
-            ->add('adeli', TextType::class, $this->configuration("Adeli", "L'adeli du médecin", [
+            ->add('postcode', TextType::class, $this->configuration("Code postal du cabinet", "Code postal du cabinet du médecin tuteur"))
+            ->add('adeli', TextType::class, $this->configuration("Numéro ADELI", "ADELI du médecin tuteur", [
                 "required" => false
             ])) 
             ->add('userRelation', UserTutorType::class)      

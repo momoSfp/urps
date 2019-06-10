@@ -1,10 +1,10 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Administration Patients{% endblock %}
+{% block title %}Administration patients{% endblock %}
 
 {% block main %}
     <div class="container-fluid">
-        <h1 class="my-5">Gestion des Patients</h1>
+        <h1 class="my-5">Gestion des patients</h1>
 
         <table id="usersTable" class="table table-hover">
             <thead>
@@ -14,7 +14,7 @@
                     <th>Date de création</th>
                     <th>Dérnière connexion</th>
                     <th>Tranche d'age</th>
-                    <th>action</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,22 +22,17 @@
                     <tr>
                         <th>{{ user.firstname }}</th>
                         <th>{{ user.lastname }}</th>
-                        <th>{{ user.createdAt | date("d/m/Y H:i", "Europe/Paris") }}</th>
+                        <th>{{ user.createdAt | date("d/m/Y", "Europe/Paris") }}</th>
                         <th class="text-center"> 
                             {% if user.updatedAt is null %}  
                                 <p>~</p>
                             {% else %}
-                                {{ user.updatedAt | date("d/m/Y  H:i", "Europe/Paris") }}
+                                {{ user.updatedAt | date("d/m/Y", "Europe/Paris") }}
                             {% endif %}
                         </th>
                         <th>{{ user.age }}</th>
                         <th>
                             <a href="{{ path('admin_users_view', {'id': user.id}) }}" class="btn btn-primary"><i class="far fa-eye"></i></a>
-                            <a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
-                            <form action="{{ path('admin_users_delete', {'id': user.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                            </form>
                         </th>
                     </tr>
                 {% endfor %}
@@ -51,14 +46,16 @@
 
     <script>
         $(document).ready( function () {
-            $('#usersTable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
+            var table = $('#usersTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'excelHtml5',
+                    'pdfHtml5'
                 ]
             });
+
+            //table.page(2).draw( false );
         } );
+
     </script>
 {% endblock %}

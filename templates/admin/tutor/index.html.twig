@@ -1,10 +1,10 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Administration tuteur{% endblock %}
+{% block title %}Administration médecins/tuteurs{% endblock %}
 
 {% block main %}
     <div class="container-fluid">
-        <h1 class="my-5">Gestion des tuteurs</h1>
+        <h1 class="my-5">Gestion des médecins/tuteurs</h1>
         
         <div class="text-center">
             <a href="{{ path('admin_tutors_create')}}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Ajouter un tuteur</a>        
@@ -13,7 +13,6 @@
         <table id="usersTable" class="table table-hover">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Adeli</th>
@@ -26,16 +25,15 @@
             <tbody>
                 {% for user in users %}
                     <tr>
-                        <th>{{ user.id }}</th>
                         <th>{{ user.firstname }}</th>
                         <th>{{ user.lastname }}</th>
                         <th>{{ user.tutorRelation.adeli }}</th>
-                        <th>{{ user.createdAt | date("d/m/Y H:i", "Europe/Paris") }}</th>
+                        <th>{{ user.createdAt | date("d/m/Y", "Europe/Paris") }}</th>
                         <th class="text-center"> 
                             {% if user.updatedAt is null %}  
                                 <p>~</p>
                             {% else %}
-                                {{ user.updatedAt | date("d/m/Y  H:i", "Europe/Paris") }}
+                                {{ user.updatedAt | date("d/m/Y", "Europe/Paris") }}
                             {% endif %}
                         </th>
                         <th>{{ user.tutorRelation.users|length  }}</th>

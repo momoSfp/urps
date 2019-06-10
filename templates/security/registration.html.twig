@@ -13,12 +13,20 @@
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-light">
-                            <h2 class="alert-heading">Informations générales</h2>
+                            <h2 class="alert-heading">Informations générales   <i class="fas fa-info-circle fa-xs" data-toggle="tooltip" data-placement="bottom" title="Toutes les informations collectées par la plateforme URPS-ML-PACA ne sont transmises qu’à votre médecin traitant at aux professionnels de l’Union Régionale des Médecins Libéraux de PACA. Elles ne sont en aucune façon vendues ou collectées à des fins commerciales ou publicitaires."></i></h2>
                             <hr>
                             {{ form_row(form.firstname) }}
-                            {{ form_row(form.lastname) }}
+                            {{ form_row(form.lastname, {
+                                    'useInfo' : true,
+                                    'info'    : 'Pour les femmes mariées, inscrire le nom déclaré auprès de votre médecin traitant.',
+                                }) 
+                            }}
                             {{ form_row(form.age) }}
-                            {{ form_row(form.email) }}
+                            {{ form_row(form.email, {
+                                    'useInfo' : true,
+                                    'info'    : 'Seul un mail d’inscription vous sera envoyé, ainsi qu’un autre lorsque vous achevez un des jeux sérieux de la plateforme URPS-ML-PACA.',
+                                })  
+                            }}
                         </div>
                         <div class="alert alert-light">
                             <h2 class="alert-heading">Securité</h2>
@@ -30,7 +38,7 @@
                     </div>
                     <div class="col">
                         <div class="alert alert-light">
-                            <h2 class="alert-heading">Questionnaire(s)</h2>
+                            <h2 class="alert-heading">Questionnaire(s) *  <i class="fas fa-info-circle fa-xs" data-toggle="tooltip" data-placement="bottom" title="Ces questions nous permettent de sélectionner le(s) jeu(x) sérieux qui vous correspond(ent) le mieux"></i></h2>
                             <hr>
                             {% for content in contents %}
                                 <fieldset class="form-group">
@@ -38,13 +46,13 @@
                                         <div class="form-check">
                                             <label class="form-check-label">
                                             <input type="radio" class="form-check-input" name="question-{{ content.id }}" id="question-{{ content.id }}-{{ loop.index0 }}" value="true" required>
-                                                Vrai
+                                                Oui
                                             </label>                                          
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
                                             <input type="radio" class="form-check-input" name="question-{{ content.id }}" id="question-{{ content.id }}-{{ loop.index }}" value="false" required>
-                                                Faux
+                                                Non
                                             </label>                                          
                                         </div>
                                 </fieldset>                            
@@ -57,6 +65,8 @@
                         </div>                                 
                     </div>
                 </div>
+                <p>* champs obligatoires</p>
+                
                 <div class="col text-center mb-3">
                     <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirmez l'inscription</button>
                     <input type="hidden" name="_token" value="{{ csrf_token('create_user_urps')}}">
@@ -65,13 +75,34 @@
     </div>            
 {% endblock %}
 
+
+
+{% block form_label %}
+        {% if useInfo is not defined %}
+            <label for="{{ form.vars.id }}" {{ (form.vars.required) ? 'class="required"' : ''}}>{{ (form.vars.label) }}</label>
+        {% else %}
+            <label for="{{ form.vars.id }}" {{ (form.vars.required) ? 'class="required"' : ''}}>{{ (form.vars.label) }} <i class="fas fa-info-circle fa-s" style="margin-left: 10px" data-toggle="tooltip" data-placement="right" title="{{ info | raw }}"></i></label>
+        {% endif %}
+{% endblock %}
+
 {% block _registration_tutor_row %}
-    {{ form_errors(form) }}
     {{ form_widget(form) }}
+{% endblock %}
+
+{% block _registration_tutor_label %}
+    {{ (form.vars.label) }}
+{% endblock %}
+
+{% block _registration_termsAccepted_widget %}
+    <div class="form-check">
+        <input type="checkbox" id="{{ form.vars.id }}" name="registration[{{ form.vars.name }}]" required="required" class="form-check-input" value="1">
+        <label class="form-check-label required" for="{{ form.vars.id }}">j'ai lu et j'accepte <a href="{{ path('home_legales_mentions') }}" target="_blank">les termes et conditions</a></label>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     <script>
+        $('[data-toggle="tooltip"]').tooltip();
         $(document).ready(function() {
             $('#registration_tutor').select2({
                 theme: "classic"

@@ -13,10 +13,9 @@
         <table id="contentsTable" class="table table-hover">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Titre</th>
-                    <th>Créer le</th>
-                    <th>Dérnière modification</th>
+                    <th>Intégré le</th>
+                    <th>Dernière modification</th>
                     <th>Statut</th>
                     <th>Public</th>
                     <th>Action</th>
@@ -25,14 +24,13 @@
             <tbody>
                 {% for content in contents %}
                     <tr>
-                        <th>{{ content.id }}</th>
                         <th>{{ content.title }}</th>
-                        <th>{{ content.createdAt | date("d/m/Y H:i", "Europe/Paris") }}</th>
+                        <th>{{ content.createdAt | date("d/m/Y", "Europe/Paris") }}</th>
                         <th class="text-center"> 
                             {% if content.lastUpdateAt is null %}  
                                 <p >~</p>
                             {% else %}
-                                {{ content.lastUpdateAt | date("d/m/Y  H:i", "Europe/Paris") }}
+                                {{ content.lastUpdateAt | date("d/m/Y", "Europe/Paris") }}
                             {% endif %}
                         </th>
                         <th class="text-center">
@@ -52,7 +50,7 @@
                         <th>
                             <a href="{{ path('admin_contents_stats', {'id': content.id}) }}" class="btn btn-info"><i class="fas fa-chart-pie"></i></a>
                             <a href="{{ path('admin_contents_edit', {'id': content.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
-                            <form action="{{ path('admin_contents_delete', {'id': content.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
+                            <form action="{{ path('admin_contents_delete', {'id': content.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Êtes-vous certain de vouloir supprimer ce jeu sérieux ? Plus aucun utilisateur n’y aura accès et le jeu sera définitivement effacé de la plateforme. Confirmez-vous votre choix ?');">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ content.id) }}">
                                 <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                             </form>

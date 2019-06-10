@@ -58,7 +58,6 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="vous devez renseigner un mot de passe") 
      * @Assert\Length(
      *      min = "6",
      *      max = "70",

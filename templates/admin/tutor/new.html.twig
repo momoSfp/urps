@@ -1,12 +1,12 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Edition d'un serious game{% endblock %}
+{% block title %}Créer un nouveau Médecin/tuteur {% endblock %}
 
 {% form_theme form 'admin/content/_collection.html.twig' %}
 
 {% block main %}
     <div class="container ">
-        <h1 class='my-5'>Créer un nouveau tuteur</h1>
+        <h1 class='my-5'>Créer un nouveau Médecin/tuteur </h1>
 
         {{ form_start(form) }}
             <div class="row">
@@ -17,15 +17,13 @@
                         {{ form_row(form.userRelation.lastname) }}
                         {{ form_row(form.userRelation.firstname) }}
                         {{ form_row(form.userRelation.email) }}
-
-                        {{ form_row(form.postcode) }}
-
                     </div>   
                 </div>
                 <div class="col">
                     <div class="alert alert-light">
                         <h2 class="alert-heading">Autres informations</h2>
                         <hr>
+                        {{ form_row(form.postcode) }}
                         {{ form_row(form.adeli) }}
                     </div>            
                 </div>

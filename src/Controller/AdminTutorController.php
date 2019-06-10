@@ -63,7 +63,6 @@ class AdminTutorController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {    
-
             // generate random password
             $password = $this->randomPassword();
             

@@ -17,7 +17,7 @@
             <!-- Icon -->
             <div class="fadeIn first">
                 <img src="/assets/images/logo-urps.png" id="icon" alt="User Icon" />
-                <h1>ETP plateforme</h1>
+                <h1>Plateforme de formation</h1>
             </div>
             {% if error %}
                 <div class="alert alert-danger">
@@ -31,7 +31,7 @@
                 <input type="password" id="password" class="fadeIn third" name="_password" placeholder="Mot de passe" required>
                 <a class='fadeIn fourth' style="display: block; text-align: right; margin-right:2.5rem" href="{{ path('security_forgotten_password') }}">Mot de passe oublié ?</a>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                <input type="submit" class="fadeIn fourth" value="Connexion !">
+                <input type="submit" class="fadeIn fourth" value="Connexion">
             </form>
 
             <!-- Remind Passowrd -->

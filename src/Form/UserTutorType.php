@@ -15,9 +15,9 @@ class UserTutorType extends UtilsType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class, $this->configuration("Prénom", "Votre prénom"))
-            ->add('lastname', TextType::class, $this->configuration("Nom", "Votre nom de famille"))
-            ->add('email', EmailType::class, $this->configuration("Email", "Votre adresse email"))
+            ->add('firstname', TextType::class, $this->configuration("Prénom", "Prénom du médecin tuteur"))
+            ->add('lastname', TextType::class, $this->configuration("Nom", "Nom du médecin tuteur"))
+            ->add('email', EmailType::class, $this->configuration("Email", "Email du médecin tuteur"))
         ;
     }
 

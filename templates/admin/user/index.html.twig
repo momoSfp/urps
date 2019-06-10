@@ -4,33 +4,31 @@
 
 {% block main %}
     <div class="container-fluid">
-        <h1 class="my-5">Gestion des Patients</h1>
+        <h1 class="my-5">Gestion des patients</h1>
 
         <table id="usersTable" class="table table-hover">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Date de création</th>
                     <th>Dérnière connexion</th>
                     <th>Tranche d'age</th>
                     <th>Tuteur</th>
-                    <th>action</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for user in users %}
                     <tr>
-                        <th>{{ user.id }}</th>
                         <th>{{ user.firstname }}</th>
                         <th>{{ user.lastname }}</th>
-                        <th>{{ user.createdAt | date("d/m/Y H:i", "Europe/Paris") }}</th>
+                        <th>{{ user.createdAt | date("d/m/Y", "Europe/Paris") }}</th>
                         <th class="text-center"> 
                             {% if user.updatedAt is null %}  
                                 <p>~</p>
                             {% else %}
-                                {{ user.updatedAt | date("d/m/Y  H:i", "Europe/Paris") }}
+                                {{ user.updatedAt | date("d/m/Y", "Europe/Paris") }}
                             {% endif %}
                         </th>
                         <th>{{ user.age }}</th>

@@ -9,6 +9,10 @@
     text-decoration: none;
     font-weight: 400;
   }
+
+  h1 {
+    font-size: 2rem!important;
+  }
   
   h2 {
     text-align: center;
