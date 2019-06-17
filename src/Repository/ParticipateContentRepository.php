@@ -19,6 +19,17 @@ class ParticipateContentRepository extends ServiceEntityRepository
         parent::__construct($registry, ParticipateContent::class);
     }
 
+    public function findParticipateContentByUserIdAndContentId($userId, $contentId)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('IDENTITY(p.user) LIKE :userId and IDENTITY(p.content) LIKE :contentId ')
+            ->setParameter('userId', $userId)
+            ->setParameter('contentId', $contentId)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return ParticipateContent[] Returns an array of ParticipateContent objects
     //  */

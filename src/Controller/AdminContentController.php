@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Content;
-use App\Entity\ParticipateContent;
 use App\Form\ContentType;
+use App\Service\StatsService;
+use App\Entity\ParticipateContent;
 use App\Repository\ContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -118,19 +119,27 @@ class AdminContentController extends AbstractController
      * 
      * @return Response
      */
-    public function stats(Content $content, ParticipateContentRepository $participateContentRepo)
+    public function stats(Content $content, ParticipateContentRepository $participateContentRepo, StatsService $statsService)
     {
         $participateContents = $participateContentRepo->findBy(['content' => $content]);
 
         $nbParticipateContents = count($participateContents);
 
         $percentCompletedGame = $this->gePercentCompletedGame($participateContents, $nbParticipateContents);
+        
+        $statsPercentAge = $statsService->gePercentAgeByContent($content);
+        $avgDuration     = $statsService->getAvgDurationParticiapteContentByContent($content);
+        $avgDiffDate     = $statsService->getAvgDiffBetweenStartEndDatePcByContent($content);
 
+        
         return $this->render('admin/content/stats.html.twig', [
             'content'               => $content,
             'nbParticipateContents' => $nbParticipateContents,
             'participateContents'   => $participateContents,
             'percentCompletedGame'  => $percentCompletedGame,
+            'statsPercentAge'       => $statsPercentAge,
+            'avgDuration'           => $avgDuration,
+            'avgDiffDate'           => $avgDiffDate,
         ]);
     }
 
@@ -170,10 +179,15 @@ class AdminContentController extends AbstractController
                 $nbCompletedContent++;
             }
         }
+        if ($nbParticipateContents > 0)
+        {
+            $percentCompleted = round(($nbCompletedContent / $nbParticipateContents) * 100);
+            $percentIncompleted = 100 - $percentCompleted;
+            
+            return [$percentIncompleted, $percentCompleted];
+        }
+        else
+            return false;
 
-        $percentCompleted = ($nbCompletedContent / $nbParticipateContents) * 100;
-        $percentIncompleted = 100 - $percentCompleted;
-        
-        return [$percentIncompleted, $percentCompleted];
     }
 }

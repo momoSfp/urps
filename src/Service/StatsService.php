@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\ParticipateContent;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class StatsService {
@@ -82,6 +83,98 @@ class StatsService {
         }
         
         return $stats;
-
     }    
+
+    function gePercentAge($nbUsers)
+    {
+        $stats = [];
+
+        $countAge = $this->manager->createQuery('SELECT COUNT(u.id), u.age FROM App\Entity\User u WHERE u.roles Not LIKE :admin AND u.roles Not LIKE :tutor GROUP BY u.age ORDER BY u.age')
+                            ->setParameter('admin', '%"ROLE_ADMIN"%')
+                            ->setParameter('tutor', '%"ROLE_TUTOR"%')                                   
+                            ->getResult();
+        
+        foreach ($countAge as $value) 
+        {
+            if ($value["age"] == null) $value["age"] = "Non renseigné";
+            $stats["label"][] = $value["age"];
+            $stats["value"][] = round(($value[1] / $nbUsers) * 100, 2);
+        }
+
+        return $stats;
+    }
+
+    function gePercentAgeByContent($content)
+    {
+        $stats = [];
+
+        $countAge = $this->manager->createQuery('SELECT COUNT(u.id), u.age
+                                                    FROM App\Entity\User u
+                                                    JOIN App\Entity\participateContent pc 
+                                                    WHERE pc.content = :content AND pc.user = u.id
+                                                    GROUP BY u.age ORDER BY u.age'
+                                                )
+                            ->setParameter('content', $content)
+                            ->getResult();
+
+        foreach ($countAge as $value) 
+        {
+            if ($value["age"] == null) $value["age"] = "Non renseigné";
+            $stats["label"][] = $value["age"];
+            $stats["value"][] = round(($value[1] / count($countAge)) * 100, 2);
+        }
+
+        return $stats;
+    }    
+    
+    function getAvgDurationParticiapteContentByContent($content)
+    {
+
+        $avgDuration = $this->manager->createQuery('SELECT AVG(pc.duration)
+                                                    FROM App\Entity\participateContent pc 
+                                                    WHERE pc.content = :content and pc.duration IS NOT NULL'
+                                                )
+                                    ->setParameter('content', $content)
+                                    ->getSingleScalarResult();
+
+        $hours = gmdate("H", $avgDuration);
+        $minutes = gmdate("i", $avgDuration);
+        $seconds = gmdate("s", $avgDuration);
+
+        //return gmdate("H:i:s", $avgDuration);
+        return $hours . " heures, " . $minutes . " minutes et " . $seconds . " secondes";
+    }
+
+    function getAvgDiffBetweenStartEndDatePcByContent($content)
+    {
+
+        $dates = $this->manager->createQuery('SELECT pc.completedAt, pc.createdAt
+                                                    FROM App\Entity\participateContent pc 
+                                                    WHERE pc.content = :content AND pc.completedAt IS NOT NULL'
+                                                )
+                            ->setParameter('content', $content)
+                            ->getResult();
+
+        $sumDiff = 0;
+
+        foreach ($dates as $date)
+        {
+            $diff = $date["completedAt"]->getTimestamp() - $date["createdAt"]->getTimestamp();
+            $sumDiff += $diff;
+        }
+
+        if (count($dates) > 0)
+        {
+            return $this->convertSecondsToDate(round($sumDiff/ (count($dates))));
+        }
+        else
+            return false;
+    }
+
+    private function convertSecondsToDate($seconds) 
+    {
+        $dt1 = new \DateTime("@0");
+        $dt2 = new \DateTime("@$seconds");
+        return $dt1->diff($dt2)->format('%a jours, %h heures, %i minutes et %s secondes');
+    }
 }

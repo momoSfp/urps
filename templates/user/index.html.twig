@@ -37,7 +37,7 @@
                         {% for participateContent in user.participateContents %}
                             {% set content = participateContent.content %}
                             {% set url = path('contents_play', {'slug': content.slug }) %}
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <div class="card bg-light mb-3">
                                     {% if participateContent.completedAt is not null %}
                                         <div id="ribbon-container">
@@ -53,9 +53,7 @@
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                         <hr>
                                         <h4 class="card-title">Avancement</h4>
-                                        {% for key, value in participateContent.result %}
-                                            <p>{{key}} : {{value}}</p>
-                                        {% endfor %}
+                                        {{ dump(participateContent.result) }}
                                         <a href="{{ url }}" class="btn btn-info">Lancer le jeu</a>
                                     </div>
                                 </div>

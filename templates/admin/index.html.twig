@@ -2,8 +2,10 @@
 
 {% block title %}Tableau de bord{% endblock %}
 
-{% block main %}
+{% set hoverBackgroundColorPie = ['#67686f', '#17a673', '#5d14d4', '#b73e75', '#c34236', '#d86f17', '#4568ce', '#81b544'] %}
+{% set backgroundColorPie = ['#858796', '#1cc88a', '#6610f2', '#e83e8c', '#e74a3b', '#fd7e14', '#4e73df', '#8bc34a'] %}
 
+{% block main %}
     <div class="container-fluid">
       <!-- Page Heading -->
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -74,7 +76,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                   <div class="dropdown-header">Année :</div>
-                    {% for key, value in stats %}
+                    {% for key, value in statsConnection %}
                       <a href="?year={{ key }}" class="dropdown-item">{{ key }}</a>
                     {% endfor %}
                 </div>
@@ -88,6 +90,21 @@
             </div>
           </div>
         </div>
+        <!-- Donut Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tranche d'age moyenne utilisateurs plateforme</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie">
+                        <canvas id="myPieChart"></canvas>
+                    </div>                      
+                </div>
+            </div>                    
+        </div>        
       </div>
       
     </div>
@@ -98,10 +115,10 @@
   <!-- Page level plugins -->
   <script src="/vendor/chart.js/Chart.min.js"></script>
 
+
   <script>
     
     var year = new Date().getFullYear();
-
 
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -139,7 +156,7 @@
       data: {
         labels: ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Dec"],
         datasets: [{
-          label: "Connexion",
+          label: "Inscription",
           lineTension: 0.3,
           backgroundColor: "rgba(78, 115, 223, 0.05)",
           borderColor: "rgba(78, 115, 223, 1)",
@@ -151,7 +168,7 @@
           pointHoverBorderColor: "rgba(78, 115, 223, 1)",
           pointHitRadius: 10,
           pointBorderWidth: 2,
-          data: {{ stats[year]|json_encode()|raw }},
+          data: {{ statsConnection[year]|json_encode()|raw }},
         }],
       },
       options: {
@@ -221,6 +238,41 @@
       }
     }); 
   
+    // Pie Chart Example
+    var ctx = document.getElementById("myPieChart");
+
+    var myPieChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+          labels: {{ statsPercentAge.label|json_encode()|raw }},
+          datasets: [{
+          data: {{ statsPercentAge.value|json_encode()|raw }},
+          backgroundColor: {{ backgroundColorPie|json_encode()|raw }},
+          hoverBackgroundColor: {{ hoverBackgroundColorPie|json_encode()|raw }},
+          hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
+    },
+    options: {
+        maintainAspectRatio: false,    
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              return data['labels'][tooltipItem['index']] + ' => ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
+            }
+          },
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          caretPadding: 10,
+        },
+        cutoutPercentage: 65,
+      },
+    });
+
   </script>
 
 {% endblock %}

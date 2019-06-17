@@ -50,7 +50,6 @@ class ContentController extends AbstractController
         [
             'content' => $content,
         ]);
-
     }
 
     /**

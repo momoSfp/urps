@@ -31,7 +31,13 @@
                                 {{ user.updatedAt | date("d/m/Y", "Europe/Paris") }}
                             {% endif %}
                         </th>
-                        <th>{{ user.age }}</th>
+                        <th>
+                            {% if user.age is null %} 
+                                <p>Non renseigné</p>
+                            {% else %}
+                                {{ user.age }}
+                            {% endif %}
+                        </th>
                         <th>
                             {% if user.tutor is not null %}
                                 {{ user.tutor.userRelation.tutorFullname }}

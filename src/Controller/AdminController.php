@@ -24,10 +24,6 @@ class AdminController extends AbstractController
      */
     public function index(UserRepository $userRepo, ContentRepository $contentRepo, Request $request, StatsService $statsService)
     {
-        //$tutors  = $userRepo->findAllTutor();
-        //$users   = $userRepo->findAllPatient();
-        //$contents = $contentRepo->findAll();
-
         $nbTutors   = $statsService->getTutorsCount();
         $nbUsers    = $statsService->getUsersCount();
         $nbContents = $statsService->getContentsCount();
@@ -36,7 +32,8 @@ class AdminController extends AbstractController
         $nbTutorsActiveLastMonth = $statsService->getNbActiveTutorsLastPeriod(4);
         $nbContentsActive        = $statsService->getActiveContentsCount();
 
-        $stats                   = $statsService->generateStatsUsersConnectionByYear();
+        $statsConnection         = $statsService->generateStatsUsersConnectionByYear();
+        $statsPercentAge         = $statsService->gePercentAge($nbUsers);
 
         $year = $request->query->get('year');
 
@@ -53,9 +50,9 @@ class AdminController extends AbstractController
             'nbTutorsActive'   => $nbTutorsActiveLastMonth,
             'nbContents'       => $nbContents,
             'nbContentsActive' => $nbContentsActive,
-            'stats'            => $stats,
-            'year'             => $year
-
+            'statsConnection'  => $statsConnection,
+            'year'             => $year,
+            'statsPercentAge'  => $statsPercentAge
         ]);
     }
 }

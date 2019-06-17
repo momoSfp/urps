@@ -49,6 +49,7 @@ class ParticipateContent
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->duration  = 0;
     }
 
     public function getId(): ?int

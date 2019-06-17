@@ -30,7 +30,13 @@
                                 {{ user.updatedAt | date("d/m/Y", "Europe/Paris") }}
                             {% endif %}
                         </th>
-                        <th>{{ user.age }}</th>
+                        <th>
+                            {% if user.age is null %} 
+                                <p>Non renseigné</p>
+                            {% else %}
+                                {{ user.age }}
+                            {% endif %}
+                        </th>
                         <th>
                             <a href="{{ path('admin_users_view', {'id': user.id}) }}" class="btn btn-primary"><i class="far fa-eye"></i></a>
                         </th>

@@ -33,12 +33,14 @@ class UserType extends UtilsType
         ->add('age', ChoiceType::class, $this->configuration("Votre tranche d'âge", "Votre tranche d'âge", 
             [
                 'choices'  => [
-                    '30-39' => '30-39',
-                    '40-49' => '40-49',
-                    '50-59' => '50-59',
-                    '60-69' => '60-69',
-                    '70-79' => '70-79',
-                    '80-89' => '80-89',
+                    'Aucune'  => NULL,
+                    '- de 30' => '- de 30',
+                    '30-39'   => '30-39',
+                    '40-49'   => '40-49',
+                    '50-59'   => '50-59',
+                    '60-69'   => '60-69',
+                    '70-79'   => '70-79',
+                    '+ de 80' => '+ de 80'
                 ], 
                 'required'  => false,
             ]
