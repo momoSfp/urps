@@ -1,3 +1,8 @@
 swiftmailer:
-    url: '%env(MAILER_URL)%'
+    transport: smtp
+    auth_mode: login
+    port: 587
+    host: ssl0.ovh.net
+    username: service@plateforme-etp-urps-ml-paca.fr
+    password: 123456789
     spool: { type: 'memory' }
