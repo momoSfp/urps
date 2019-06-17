@@ -46,9 +46,17 @@ class ContentController extends AbstractController
      */
     public function play(Content $content)
     {
+        $a = $_POST["uid"]; if (!$a) $a = 0;
+        $b = $_POST["cid"]; if (!$b) $b = 0;
+        $c = $_POST["www"]; if (!$c) $c = "~";
+        $d = $_POST["api"]; if (!$d) $d = "~";
+        $e = 0;
+        $SFP_DATA = implode("__", array($a, $b, $c, $d, $e));
+
         return $this->render('content/play.html.twig', 
         [
             'content' => $content,
+            'SFP_DATA' => $SFP_DATA
         ]);
     }
 

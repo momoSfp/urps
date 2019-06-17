@@ -22,11 +22,13 @@
                                 }) 
                             }}
                             {{ form_row(form.age) }}
+
                             {{ form_row(form.email, {
                                     'useInfo' : true,
                                     'info'    : 'Seul un mail d’inscription vous sera envoyé, ainsi qu’un autre lorsque vous achevez un des jeux sérieux de la plateforme URPS-ML-PACA.',
                                 })  
                             }}
+
                         </div>
                         <div class="alert alert-light">
                             <h2 class="alert-heading">Securité</h2>
@@ -80,8 +82,10 @@
 {% block form_label %}
         {% if useInfo is not defined %}
             <label for="{{ form.vars.id }}" {{ (form.vars.required) ? 'class="required"' : ''}}>{{ (form.vars.label) }}</label>
+            {{ form_errors(form) }}
         {% else %}
             <label for="{{ form.vars.id }}" {{ (form.vars.required) ? 'class="required"' : ''}}>{{ (form.vars.label) }} <i class="fas fa-info-circle fa-s" style="margin-left: 10px" data-toggle="tooltip" data-placement="right" title="{{ info | raw }}"></i></label>
+            {{ form_errors(form) }}
         {% endif %}
 {% endblock %}
 

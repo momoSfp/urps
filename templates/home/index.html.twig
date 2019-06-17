@@ -161,7 +161,7 @@
                                         </div>
                                         
                                         <div class="mb-5 mt-3">{{ content.description | raw}}</div>
-                                        <form action="/uploads/games/extract/gluciboat/index.php" method="post">
+                                        <form action="{{ path('contents_play', {'slug': content.slug }) }}" method="post">
                                             <input class="btn btn-success btn-lg rounded-pill" type="submit" value="Voir le jeu">
                                             <input id="uid" name="uid" type="hidden" value="{{ user.id }}">
                                             <input id="cid" name="cid" type="hidden" value="{{ content.id }}">

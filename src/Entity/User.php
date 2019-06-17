@@ -59,7 +59,7 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\Length(
-     *      min = "6",
+     *      min = "5",
      *      max = "70",
      *      minMessage = "Le mot de passe doit comporter au moins {{ limit }} caractères.",
      *      maxMessage = "Le mot de passe ne doit pas comporter plus de {{ limit }} caractères."
