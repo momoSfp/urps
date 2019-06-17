@@ -48,8 +48,8 @@ class Content
      * @var File
      * @Vich\UploadableField(mapping="content_coverImage", fileNameProperty="coverImage")
      * @Assert\File(
-     *   maxSize = "30M",
-     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{maxSize}} {{ suffix }}.",
+     *   maxSize = "10M",
+     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{ maxSize }} {{ suffix }}.",
      *   mimeTypes = {"image/png", "image/jpeg", "image/jpg", "image/gif"},
      *   mimeTypesMessage = "Ce type de fichier n'est pas autorisé. Seulement les fichiers images (gif, png, jpg) sont autorisé."
      * )
@@ -84,8 +84,8 @@ class Content
      * @Vich\UploadableField(mapping="content_game", fileNameProperty="filename")     
      * @Assert\NotNull(groups={"create"})
      * @Assert\File(
-     *   maxSize = "100M",
-     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{size}} {{ suffix }}.",
+     *   maxSize = "200M",
+     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{ maxSize }} {{ suffix }}.",
      *   mimeTypes = {"application/gzip", "application/zip"},
      *   mimeTypesMessage = "Ce type de fichier n'est pas autorisé. Seulement les fichiers zip sont autorisé."
      * )
