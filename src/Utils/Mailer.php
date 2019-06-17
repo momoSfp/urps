@@ -14,7 +14,7 @@ class Mailer
     public function __construct(\Swift_Mailer $mailer)
     {
         $this->mailer = $mailer;
-        $this->emailFrom = "mahdjoub.m@gmail.com";
+        $this->emailFrom = "service@plateforme-etp-urps-ml-paca.fr";
     }
 
     public function sendMail($subject, $body, $to)
@@ -25,8 +25,12 @@ class Mailer
                 ->setSubject("Urps - " . $subject)
                 ->setBody($body, 'text/html')
                 ->setTo($to);
-
-        $this->mailer->send($message);
+                
+        try {
+            $this->mailer->send($message);
+        } catch (\Swift_TransportException $Ste) {
+            echo "EROORRRRRRRRRRRRRRRRRRRR\n\n\n";
+        }
     }
 
     public function getMailSubjectWelcome()
