@@ -3,7 +3,6 @@
 namespace App\EventListener;
 
 use App\Entity\Content;
-use App\Utils\ArchiveZip;
 use Vich\UploaderBundle\Event\Event;
 
 class UploadListener
@@ -24,10 +23,7 @@ class UploadListener
             if ( $object->getGameFile() !== null  )
             {
 
-                $mimeType = $object->getGameFile()->getMimeType();
-
-                $archive = new ArchiveZip;
-        
+                $mimeType = $object->getGameFile()->getMimeType();        
         
                 if ($mimeType == "application/zip")
                 {
