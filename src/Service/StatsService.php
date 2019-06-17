@@ -107,7 +107,7 @@ class StatsService {
     function gePercentAgeByContent($content)
     {
         $stats = [];
-
+        $nbUsers = 0;
         $countAge = $this->manager->createQuery('SELECT COUNT(u.id), u.age
                                                     FROM App\Entity\User u
                                                     JOIN App\Entity\participateContent pc 
@@ -119,9 +119,14 @@ class StatsService {
 
         foreach ($countAge as $value) 
         {
+            $nbUsers += $value[1];
+        }
+        
+        foreach ($countAge as $value) 
+        {
             if ($value["age"] == null) $value["age"] = "Non renseigné";
             $stats["label"][] = $value["age"];
-            $stats["value"][] = round(($value[1] / count($countAge)) * 100, 2);
+            $stats["value"][] = round(($value[1] / $nbUsers) * 100, 2);
         }
 
         return $stats;
@@ -168,7 +173,7 @@ class StatsService {
             return $this->convertSecondsToDate(round($sumDiff/ (count($dates))));
         }
         else
-            return false;
+            return '0 jours, 0 heures, 0 minutes et 0 secondes';
     }
 
     private function convertSecondsToDate($seconds) 
