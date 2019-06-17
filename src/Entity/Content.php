@@ -48,8 +48,8 @@ class Content
      * @var File
      * @Vich\UploadableField(mapping="content_coverImage", fileNameProperty="coverImage")
      * @Assert\File(
-     *   maxSize = "10M",
-     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{size}} {{ suffix }}.",
+     *   maxSize = "30M",
+     *   maxSizeMessage = "Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{maxSize}} {{ suffix }}.",
      *   mimeTypes = {"image/png", "image/jpeg", "image/jpg", "image/gif"},
      *   mimeTypesMessage = "Ce type de fichier n'est pas autorisé. Seulement les fichiers images (gif, png, jpg) sont autorisé."
      * )

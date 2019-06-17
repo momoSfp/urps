@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Utils\Mailer;
 use App\Entity\Content;
 use App\Entity\ParticipateContent;
 use App\Repository\UserRepository;
@@ -68,7 +69,7 @@ class ApiController extends FOSRestController
    *
    * @return Response
    */
-  public function postParticipateData(Request $request, ParticipateContentRepository $participateContentRepo, ObjectManager $manager)
+  public function postParticipateData(UserRepository $userRepo, ContentRepository $contentRepo, Request $request, ParticipateContentRepository $participateContentRepo, ObjectManager $manager, Mailer $mailer)
   {
     
     $data = json_decode($request->getContent(), true);
@@ -80,6 +81,16 @@ class ApiController extends FOSRestController
       if ($data["completed"])
       {
         $participateContent->setCompletedAt(new \DateTime());
+
+        $user = $userRepo->find($data["uid"]);
+        $content = $contentRepo->find($data["cid"]);
+
+        $mailer->sendMail(
+            $mailer->getMailSubjectEndGame(), 
+            $mailer->getMailBodyEndGame($user, $content),
+            $user->getEmail()
+        );
+
       }
 
       $participateContent->setDuration($participateContent->getDuration() + $data["duration"]);

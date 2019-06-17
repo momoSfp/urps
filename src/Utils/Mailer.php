@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Entity\User;
 use App\Entity\Tutor;
+use App\Entity\Content;
 
 class Mailer
 {
@@ -25,17 +26,19 @@ class Mailer
                 ->setSubject("Urps - " . $subject)
                 ->setBody($body, 'text/html')
                 ->setTo($to);
-                
-        try {
-            $this->mailer->send($message);
-        } catch (\Swift_TransportException $Ste) {
-            echo "EROORRRRRRRRRRRRRRRRRRRR\n\n\n";
-        }
+
+        $this->mailer->send($message);
+
     }
 
     public function getMailSubjectWelcome()
     {
         return "Bienvenue sur la plateforme etp";
+    }
+
+    public function getMailSubjectEndGame()
+    {
+        return "achèvement jeux sérieux";
     }
 
     public function getMailSubjectResetPassword()
@@ -45,12 +48,28 @@ class Mailer
 
     public function getMailBodyWelcome(User $user, $url)
     {
-        $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bienvenue " . $user->getFirstname() . ",</h1>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Nous sommes ravis de vous avoir à bord.</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour référence, voici vos informations de connexion:</p>";
+        $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bienvenue " . $user->getFirstname() . " " . $user->getLastname() . "</h1>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Nous sommes ravis de vous avoir à bord !</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour mémoire, voici le lien pour participer au jeu sérieux qui vous a été recommandé :</p>";
         $body .= "<div style='padding-right:30px;padding-left:30px'><table style='table-layout:fixed;border:1px solid #a0a0a2;border-radius:8px;padding:40px 0;margin-top:20px;width:100%;border-collapse:separate;text-align:center'><tbody><tr><td style='vertical-align:middle'><h4 style='margin-bottom:2px;font-size:17px;font-weight:400'>Lien du site : <a href='" . $url . "' style='white-space:nowrap;color:#0576b9' target='_blank'>" . $url . "</a></h4><h4 style='margin-bottom:0;font-size:17px;font-weight:400'></td></tr></tbody></table></div>"; 
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous avez des questions, n'hésitez pas à envoyer un courrier électronique à notre équipe de service à la clientèle truc@truc.fr. (Nous répondons très rapidement.) </p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Merci</p>";        
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous pouvez à tout moment modifier vos informations et votre mot de passe.<br>Pour cela, il vous suffit de vous connecter à la plateforme en vous identifiant et d'ouvrir l'onglet \"Mes informations\", dans votre profil.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Votre médecin traitant pourra suivre votre avancement dans le jeu, afin d'adapter au mieux les conseils et informations qu'il vous délivrera lors de votre prochaine consultation. Seuls lui et les professionnels de l'Union Régionale des Médecins Libéraux de la région PACA ont accés à ces informations.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Aucune démarche commerciale ne résultera de votre inscription, cette plateforme et les activités qu'elle héberge ont été créées dans un but strictement informatif et éducatif, afin de soutenir les patients et le suivi par leur médecin traitant.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour toute question, vous pouvez contacter l'assistance de la plateforme par courrier électronique, à l'adresse suivante : contact-plateforme@urps-ml-paca.org</p>";              
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";        
+        $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
+        $body .= "</div>";
+
+        return $this->getMailTemplate($body);
+    }
+
+    public function getMailBodyEndGame(User $user, Content $content)
+    {
+        $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bravo " . $user->getFirstname() . " " . $user->getLastname() . " !</h1>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous avez terminé le jeu serieux " . $content->getTitle() . " !</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous le souhaitez, vous pouvez à tout moment recommencer les activités qui vous ont été proposées dans le jeu en vous connectant à nouveau.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Votre médecin traitant est informé de votre avancement dans le jeu.</p>";
         $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
         $body .= "</div>";
@@ -61,11 +80,13 @@ class Mailer
     public function getMailTutorBodyWelcome(Tutor $tutor, $url)
     {
         $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bienvenue Dr " . $tutor->getUserRelation()->getFirstname() . " " . $tutor->getUserRelation()->getLastname() . ",</h1>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Nous sommes ravis de vous avoir à bord.</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour référence, voici vos informations de connexion:</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Nous sommes ravis de vous avoir à bord !</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour mémoire, voici le lien pour participer au jeu sérieux qui vous a été recommandé :</p>";
         $body .= "<div style='padding-right:30px;padding-left:30px'><table style='table-layout:fixed;border:1px solid #a0a0a2;border-radius:8px;padding:40px 0;margin-top:20px;width:100%;border-collapse:separate;text-align:center'><tbody><tr><td style='vertical-align:middle'><h4 style='margin-bottom:2px;font-size:17px;font-weight:400'>Lien du site : <a href='" . $url . "' style='white-space:nowrap;color:#0576b9' target='_blank'>" . $url . "</a></h4><h4 style='margin-bottom:0;font-size:17px;font-weight:400'>Mot de passe : <strong>" . $tutor->getPlainTextPass() . "</strong></h4></td></tr></tbody></table></div>"; 
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous avez des questions, n'hésitez pas à envoyer un courrier électronique à notre équipe de service à la clientèle truc@truc.fr. (Nous répondons très rapidement.) </p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Merci</p>";        
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous pouvez à tout moment modifier vos informations et votre mot de passe.<br>Pour cela, il vous suffit de vous connecter à la plateforme en vous identifiant et d'ouvrir l'onglet \"Mes informations\", dans votre profil.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Aucune démarche commerciale ne résultera de votre inscription, cette plateforme et les activités qu'elle héberge ont été créées dans un but strictement informatif et éducatif, afin de soutenir les patients et le suivi par leur médecin traitant.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour toute question, vous pouvez contacter l'assistance de la plateforme par courrier électronique, à l'adresse suivante : contact-plateforme@urps-ml-paca.org</p>";        
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";        
         $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
         $body .= "</div>";
@@ -89,8 +110,6 @@ class Mailer
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
         $body .= "</div>";
 
-
-        
         return $this->getMailTemplate($body);
     }
 
