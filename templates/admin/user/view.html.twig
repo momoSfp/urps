@@ -30,11 +30,7 @@
                                             <p id="ribbon-{{ content.slug }}">Terminé le {{ participateContent.completedAt | date("d/m/Y  H:i", "Europe/Paris") }}</p>
                                         </div>
                                     {% endif %}                                
-                                    <a href="{{ url }}">                                    
-                                        <img src="{{ vich_uploader_asset(content, 'coverImageFile') }}" alt="image jeux-1"
-                                            style="height: 200px; width: 100%; display: block;">
-                                    </a>
-
+                                    <div style="height: 200px; background: url({{ vich_uploader_asset(content, 'coverImageFile') }}) no-repeat center center; color: black; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"></div>
                                     <div class="card-body">
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                         <hr>                                       

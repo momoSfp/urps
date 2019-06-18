@@ -176,6 +176,52 @@ class StatsService {
             return '0 jours, 0 heures, 0 minutes et 0 secondes';
     }
 
+    function getAvgHemo($participateContents)
+    {
+        $stats = [];
+        $cp0 = $cp1 = $cp2 = 0;
+        $sum0 = $sum1 = $sum2 = 0;
+        $avg0 = $avg1 = $avg2 = 0;
+        $avgUser0 = $avgUser1 = $avgUser2 = 0;
+        $nbParticipateContent = count($participateContents);
+
+        foreach ($participateContents as $participateContent)
+        {
+            $result = $participateContent->getResult();
+            
+            if (!empty($result))
+            {
+                if (isset($result["hemoglobins"][0]))
+                {
+                    $sum0 += $result["hemoglobins"][0]["value"];
+                    $cp0++;
+                }
+
+                if (isset($result["hemoglobins"][1]))
+                {
+                    $sum1 += $result["hemoglobins"][1]["value"];
+                    $cp1++;
+                }
+
+                if (isset($result["hemoglobins"][2]))
+                {
+                    $sum2 += $result["hemoglobins"][2]["value"];
+                    $cp2++;
+                }
+            }
+        }
+
+        if ($cp0 != 0 ) { $avg0 =  round($sum0 / $cp0, 1); $avgUser0 = round(($cp0 * 100)/ $nbParticipateContent);}
+        if ($cp1 != 0 ) { $avg1 =  round($sum1 / $cp1, 1); $avgUser1 = round(($cp1 * 100)/ $nbParticipateContent);}
+        if ($cp2 != 0 ) { $avg2 =  round($sum2 / $cp2, 1); $avgUser2 = round(($cp2 * 100)/ $nbParticipateContent);}
+
+
+        $stats["avgUser"] = [$avgUser0, $avgUser1, $avgUser2];
+        $stats["avg"] = [$avg0, $avg1, $avg2];
+
+        return $stats;
+    }
+
     private function convertSecondsToDate($seconds) 
     {
         $dt1 = new \DateTime("@0");
