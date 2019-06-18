@@ -2,6 +2,9 @@
 
 {% block title %}Historique du Patient{% endblock %}
 
+{% set datesHemo  = [] %}
+{% set valuesHemo = [] %}
+
 {% block main %}
     <div class="container-fluid">
         <h1 class="my-5">Suivi du patient {{ user.fullname }}</h1>
@@ -13,29 +16,108 @@
                         {% for participateContent in user.participateContents %}
                             {% set content = participateContent.content %}
                             {% set url = path('contents_play', {'slug': content.slug }) %}
-                            <div class="col-md-6">
+
+                            {% for hemoglobin in participateContent.result.hemoglobins %}
+                                {% set datesHemo  = datesHemo|merge([hemoglobin.date|date("d/m/Y")]) %}
+                                {% set valuesHemo = valuesHemo|merge([hemoglobin.value]) %}
+
+                            {% endfor %}
+
+                            <div class="col-md-12">
                                 <div class="card bg-light mb-3">
                                     {% if participateContent.completedAt is not null %}
                                         <div id="ribbon-container">
                                             <p id="ribbon-{{ content.slug }}">Terminé le {{ participateContent.completedAt | date("d/m/Y  H:i", "Europe/Paris") }}</p>
                                         </div>
-                                    {% endif %}
-                                    <a href="{{ url }}">
+                                    {% endif %}                                
+                                    <a href="{{ url }}">                                    
                                         <img src="{{ vich_uploader_asset(content, 'coverImageFile') }}" alt="image jeux-1"
                                             style="height: 200px; width: 100%; display: block;">
                                     </a>
 
                                     <div class="card-body">
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
-                                        <hr>
-                                        <h4 class="card-title">Avancement</h4>
-                                        <p>Premiére connexion le {{ participateContent.createdAt | date("d/m/Y  H:i", "Europe/Paris") }}
-                                        {% for key, value in participateContent.result %}
-                                                
+                                        <hr>                                       
+                                        <h3 class="card-title">Questionnaires pré et post-formation</h4>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3 class="progress-title">Avant la formation (bonnes réponses)</h3>
+                                                        <div class="progress-outer">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-striped progress-bar-{{ (participateContent.result.scoring.pr <= 50) ? 'danger' : 'success' }}" style="width:{{ participateContent.result.scoring.pr }}%;"></div>
+                                                                <div class="progress-value"><span>{{ participateContent.result.scoring.pr }}</span>%</div>
+                                                            </div>
+                                                        </div>                                                    
+                                                    </div>                       
+                                                </div>                                        
+                                            </div>                                        
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3 class="progress-title">Après la formation (bonnes réponses)</h3>
+                                                        {% if  participateContent.result.scoring.post == -1 %}
+                                                            <p style="line-height: 40px; font-weight: 700;">Vous n'avez pas encore répondu au questionnaire post-formation.</p>
+                                                        {% else %}
+                                                            <div class="progress-outer">
+                                                                <div class="progress">
+                                                                    <div class="progress-bar progress-bar-striped progress-bar-{{ (participateContent.result.scoring.post <= 50) ? 'danger' : 'success' }}" style="width:{{ participateContent.result.scoring.post }}%;"></div>
+                                                                    <div class="progress-value"><span>{{ participateContent.result.scoring.post }}</span>%</div>
+                                                                </div>
+                                                            </div>   
+                                                        {% endif %}
+                                                 
+                                                    </div>                       
+                                                </div>                                        
+                                            </div>               
+                                        </div>
+                                        <h3 class="card-title">Compétences d'ETP acquises</h4>
+                                        {% set skillsName = ["Alimentation", "Activité physique adaptée", "Hypoglycémie", 
+                                                "Metformine", "Insulines", "Antidiabétiques oraux et injectables", "Complications"] %}
+                                        {% for skill in participateContent.result.scoring.skills %}
+                                            {% set percent = (skill.total * 100) / skill.max %}
+
+                                            {% if percent <= 30 %}
+                                                {% set status = 'danger' %}
+                                            {% elseif percent > 30  and  percent <= 60 %}
+                                                {% set status = 'info' %}
+                                            {% else %}
+                                                {% set status = 'success' %}
+                                            {% endif %}
+
+                                            <div class="row">                                  
+                                                <div class="col-md-12">
+                                                    <h3 class="progress-title">{{ skillsName[(skill.id - 1)] }}</h3>
+                                                    <div class="progress-outer">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-{{ status }}" style="width:{{ percent }}%;"></div>
+                                                            <div class="progress-value"><span>{{ percent }}</span>%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         {% endfor %}
+
+                                        <h3 class="card-title">Hémoglobine(s) glyquée(s) déclarée(s)</h4>
+
+                                        <!-- Area Chart -->
+                                        <div class="row justify-content-md-center align-items-center">
+                                            <div class="col-xl-8 col-lg-7 align-items-center">
+                                                <div class="card shadow mb-4">
+                                                    <!-- Card Body -->
+                                                    <div class="card-body">
+                                                        <div class="chart-area">
+                                                            <canvas id="myAreaChart"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         {% endfor %}
                     </div>   
                 {% else %}
@@ -50,4 +132,116 @@
             </div>
         </div>
     </div>
+
+    <script src="/vendor/chart.js/Chart.min.js"></script>
+
+
+    <script>
+            // Area Chart Example
+            var ctx = document.getElementById("myAreaChart");
+            var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ datesHemo|json_encode()|raw }},
+                datasets: [{
+                label: "Inscription",
+                lineTension: 0.3,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: {{ valuesHemo|json_encode()|raw }},
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                }
+                },
+                scales: {
+                xAxes: [{
+                    time: {
+                    unit: 'date'
+                    },
+                    gridLines: {
+                    display: false,
+                    drawBorder: false
+                    },
+                    ticks: {
+                    maxTicksLimit: 7
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    },
+                    gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                    }
+                }],
+                },
+                legend: {
+                display: false
+                },
+                tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                intersect: false,
+                mode: 'index',
+                caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return   tooltipItem.yLabel + '%';
+                    }
+                }
+                }
+            }
+            }); 
+    </script>    
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $(document).ready(function(){
+
+
+            $('.progress-value > span').each(function(){
+                $(this).prop('Counter',0).animate({
+                    Counter: $(this).text()
+                },{
+                    duration: 1500,
+                    easing: 'swing',
+                    step: function (now){
+                        $(this).text(Math.ceil(now));
+                    }
+                });
+            });
+        });  
+    </script>
 {% endblock %}

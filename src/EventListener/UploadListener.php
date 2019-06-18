@@ -39,8 +39,7 @@ class UploadListener
                     {
                         $zip->extractTo($pathToExtract);
                         $zip->close();
-                        $object->setLink($pathToExtract . "/" . $filename . "/index.html");
-            
+                        $object->setLink( "/uploads/games/extract/" . $filename . "/index.html");
                     }
         
                 } 
