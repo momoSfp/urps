@@ -29,7 +29,6 @@
             <div class="row">
                 {% if user.recommendedContent is not empty %}
                     {% for content in user.recommendedContent %}
-                        {% set url = path('contents_show', {'slug': content.slug }) %}
 
                         <div class="col-md-6 col-lg-4">
                             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-{{ loop.index }}">
@@ -81,7 +80,7 @@
                                             
                                             <p class="mb-5 mt-3">{{ content.description | raw}}</p>
                                             <form action="{{ path('contents_play', {'slug': content.slug }) }}" method="post">
-                                                <input class="btn btn-success btn-lg rounded-pill" type="submit" value="Voir le jeu">
+                                                <input class="btn btn-success btn-lg rounded-pill" type="submit" value="Jouer">
                                                 <input id="uid" name="uid" type="hidden" value="{{ user.id }}">
                                                 <input id="cid" name="cid" type="hidden" value="{{ content.id }}">
                                                 <input id="www" name="www" type="hidden" value="{{ url('home_index') }}">
@@ -110,7 +109,6 @@
             <hr class="star-light mb-5">
             <div class="row">
                 {% for content in contents %}
-                    {% set url = path('contents_show', {'slug': content.slug }) %}
                     <div class="col-md-6 col-lg-4">
                         <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-{{ loop.index }}">
                             <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
@@ -162,7 +160,7 @@
                                         
                                         <div class="mb-5 mt-3">{{ content.description | raw}}</div>
                                         <form action="{{ path('contents_play', {'slug': content.slug }) }}" method="post">
-                                            <input class="btn btn-success btn-lg rounded-pill" type="submit" value="Voir le jeu">
+                                            <input class="btn btn-success btn-lg rounded-pill" type="submit" value="Jouer">
                                             <input id="uid" name="uid" type="hidden" value="{{ user.id }}">
                                             <input id="cid" name="cid" type="hidden" value="{{ content.id }}">
                                             <input id="www" name="www" type="hidden" value="{{ url('home_index') }}">

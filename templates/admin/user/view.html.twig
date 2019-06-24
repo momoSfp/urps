@@ -53,13 +53,13 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <h3 class="progress-title">Après la formation (bonnes réponses)</h3>
-                                                        {% if  participateContent.result.scoring.post == -1 %}
+                                                        {% if  participateContent.result.scoring.po == -1 %}
                                                             <p style="line-height: 40px; font-weight: 700;">Vous n'avez pas encore répondu au questionnaire post-formation.</p>
                                                         {% else %}
                                                             <div class="progress-outer">
                                                                 <div class="progress">
-                                                                    <div class="progress-bar progress-bar-striped progress-bar-{{ (participateContent.result.scoring.post <= 50) ? 'danger' : 'success' }}" style="width:{{ participateContent.result.scoring.post }}%;"></div>
-                                                                    <div class="progress-value"><span>{{ participateContent.result.scoring.post }}</span>%</div>
+                                                                    <div class="progress-bar progress-bar-striped progress-bar-{{ (participateContent.result.scoring.po <= 50) ? 'danger' : 'success' }}" style="width:{{ participateContent.result.scoring.po }}%;"></div>
+                                                                    <div class="progress-value"><span>{{ participateContent.result.scoring.po }}</span>%</div>
                                                                 </div>
                                                             </div>   
                                                         {% endif %}

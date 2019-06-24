@@ -110,15 +110,15 @@ class AdminTutorController extends AbstractController
      * 
      * @return Response
      */
-    public function edit(Tutor $turor, Request $request, ObjectManager $manager)
+    public function edit(Tutor $tutor, Request $request, ObjectManager $manager)
     {
-        $form = $this->createForm(TutorType::Class, $turor);
+        $form = $this->createForm(TutorType::Class, $tutor);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {           
-            $manager->persist($turor);
+            $manager->persist($tutor);
             $manager->flush();
 
             $this->addFlash(
@@ -131,7 +131,7 @@ class AdminTutorController extends AbstractController
 
         return $this->render('admin/tutor/edit.html.twig', [
             'form' => $form->createView(),
-            'turor' => $turor,
+            'turor' => $tutor,
         ]);
     }
 

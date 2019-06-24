@@ -23,20 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  *@IsGranted("ROLE_USER")
  */
 class ContentController extends AbstractController
-{
-    /**
-     * @Route("/", name="contents_index")
-     */
-    public function index(ContentRepository $repo)
-    {
-        $contents = $repo->findAllActive();
-
-        return $this->render('content/index.html.twig', 
-        [
-            'contents' => $contents,
-        ]);
-    }
-    
+{   
     /**
      * Play game
      * 
@@ -50,7 +37,6 @@ class ContentController extends AbstractController
         $b = $_POST["cid"]; if (!$b) $b = 0;
         $c = $_POST["www"]; if (!$c) $c = "~";
         $d = $_POST["api"]; if (!$d) $d = "~";
-        $e = 0;
         $SFP_DATA = implode("__", array($a, $b, $c, $d, $e));
 
         return $this->render('content/play.html.twig', 
@@ -59,23 +45,4 @@ class ContentController extends AbstractController
             'SFP_DATA' => $SFP_DATA
         ]);
     }
-
-    /**
-     * Show one content
-     * 
-     * @Route("/{slug}", name="contents_show")
-     * 
-     * @return Response
-     */
-    public function show(Content $content, ParticipateContent $participateContent = null)
-    {
-        if (empty($ParticipateContent)) $ParticipateContent = null;
-
-        return $this->render('content/show.html.twig', 
-        [
-            'content' => $content,
-            'participateContent' => $participateContent
-        ]);
-    }
-
 }

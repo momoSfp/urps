@@ -50,12 +50,13 @@ class Mailer
     {
         $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bienvenue " . $user->getFirstname() . " " . $user->getLastname() . "</h1>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Nous sommes ravis de vous avoir à bord !</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour mémoire, voici le lien pour participer au jeu sérieux qui vous a été recommandé :</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour mémoire, voici le lien pour participer au jeu sérieux (serious game) qui vous a été recommandé :</p>";
         $body .= "<div style='padding-right:30px;padding-left:30px'><table style='table-layout:fixed;border:1px solid #a0a0a2;border-radius:8px;padding:40px 0;margin-top:20px;width:100%;border-collapse:separate;text-align:center'><tbody><tr><td style='vertical-align:middle'><h4 style='margin-bottom:2px;font-size:17px;font-weight:400'>Lien du site : <a href='" . $url . "' style='white-space:nowrap;color:#0576b9' target='_blank'>" . $url . "</a></h4><h4 style='margin-bottom:0;font-size:17px;font-weight:400'></td></tr></tbody></table></div>"; 
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous pouvez à tout moment modifier vos informations et votre mot de passe.<br>Pour cela, il vous suffit de vous connecter à la plateforme en vous identifiant et d'ouvrir l'onglet \"Mes informations\", dans votre profil.</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Votre médecin traitant pourra suivre votre avancement dans le jeu, afin d'adapter au mieux les conseils et informations qu'il vous délivrera lors de votre prochaine consultation. Seuls lui et les professionnels de l'Union Régionale des Médecins Libéraux de la région PACA ont accés à ces informations.</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Aucune démarche commerciale ne résultera de votre inscription, cette plateforme et les activités qu'elle héberge ont été créées dans un but strictement informatif et éducatif, afin de soutenir les patients et le suivi par leur médecin traitant.</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour toute question, vous pouvez contacter l'assistance de la plateforme par courrier électronique, à l'adresse suivante : contact-plateforme@urps-ml-paca.org</p>";              
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous pouvez à tout moment modifier vos informations et votre mot de passe. Pour cela, il vous suffit de vous connecter à la plateforme en vous identifiant et d'ouvrir l'onglet \"Mes informations\", dans votre profil</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Votre médecin traitant pourra suivre votre avancement dans le jeu, afin d'adapter au mieux les conseils et informations qu'il vous délivrera lors de votre prochaine consultation. Seuls lui et l’administrateur de l'Union Régionale des Médecins Libéraux de la région PACA ont accès à ces informations.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Aucune démarche commerciale ne résultera de votre inscription, cette plateforme et les activités qu'elle héberge ont été créées dans un but strictement informatif et éducatif, afin de soutenir les patients et le suivi par leur médecin traitant.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour toute question, vous pouvez contacter l'assistance de la plateforme par
+        courrier électronique, à l'adresse suivante : contact-plateforme@urps-ml-paca.org</p>";              
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";        
         $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
@@ -67,9 +68,11 @@ class Mailer
     public function getMailBodyEndGame(User $user, Content $content)
     {
         $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bravo " . $user->getFirstname() . " " . $user->getLastname() . " !</h1>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous avez terminé le jeu serieux " . $content->getTitle() . " !</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous le souhaitez, vous pouvez à tout moment recommencer les activités qui vous ont été proposées dans le jeu en vous connectant à nouveau.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous avez terminé le jeu sérieux (serious game) " . $content->getTitle() . " !</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous le souhaitez, vous pouvez à tout moment recommencer les activités qui vous ont été proposées dans le jeu en vous connectant à nouveau.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Votre médecin traitant est informé de votre avancement dans le jeu.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>N'hésitez pas à en parler avec lui.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";
         $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
         $body .= "</div>";
@@ -81,9 +84,9 @@ class Mailer
     {
         $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bienvenue Dr " . $tutor->getUserRelation()->getFirstname() . " " . $tutor->getUserRelation()->getLastname() . ",</h1>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous êtes bien inscrit(e) sur la plateforme de l'URPS-ML-PACA.</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour mémoire, voici vos informations de connexion :</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>PPour mémoire, voici vos informations de connexion :</p>";
         $body .= "<div style='padding-right:30px;padding-left:30px'><table style='table-layout:fixed;border:1px solid #a0a0a2;border-radius:8px;padding:40px 0;margin-top:20px;width:100%;border-collapse:separate;text-align:center'><tbody><tr><td style='vertical-align:middle'><h4 style='margin-bottom:2px;font-size:17px;font-weight:400'>Lien du site : <a href='" . $url . "' style='white-space:nowrap;color:#0576b9' target='_blank'>" . $url . "</a></h4><h4 style='margin-bottom:0;font-size:17px;font-weight:400'>Mot de passe : <strong>" . $tutor->getPlainTextPass() . "</strong></h4></td></tr></tbody></table></div>"; 
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous pouvez dès à présent suivre l'avancement de vos patients sur le(s)jeu(x) sérieux que vous leur avez recommandé(s), s'ils s'y sont inscrits.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous pouvez dés à présent suivre l'avancement de vos patients sur le(s) jeu(x) sérieux (serious game) que vous leur avez recommandé(s), s'ils s'y sont inscrits.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour cela, il vous suffit de vous connecter à la plateforme en vous identifiant et d'ouvrir l'onglet \"Mes patients\", dans votre profil.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour toute question, vous pouvez contacter l'assistance de la plateforme par courrier électronique, à l'adresse suivante : contact-plateforme@urps-ml-paca.org</p>";        
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";        
@@ -97,10 +100,11 @@ class Mailer
     public function getMailBodyResetPassword($url)
     {
         $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bonjour,</h1>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte.</p>";
-        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Utilisez le bouton ci-dessous pour le réinitialiser. Cette réinitialisation du mot de passe n'est valide que pour les prochaines 24 heures.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous avez récemment demandé à réinitialiser le mot de passe pour votre compte.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cliquez sur le bouton ci-dessous pour terminer cette démarche.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Ce bouton n'est valide que pour les prochaines 24 heures.</p>";
         $body .= "<br>";
-        $body .= "<table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='center'><a href='" . $url ."' style='padding: 10px; tex-align: center; color: white; background-color: #2ab178; font-size: 20px; border-radius:10px;'>Réinitialisé le mot de passe</a></td></tr></table>";
+        $body .= "<table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='center'><a href='" . $url ."' style='padding: 10px; tex-align: center; color: white; background-color: #2ab178; font-size: 20px; border-radius:10px;'>Réinitialiser le mot de passe</a></td></tr></table>";
         $body .= "<br>";        
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous n'avez pas demandé de réinitialisation de mot de passe, veuillez ignorer cet email ou contacter le support.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Merci</p>";

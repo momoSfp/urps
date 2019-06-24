@@ -161,7 +161,7 @@ class SecurityController extends AbstractController
                 $email
             );
 
-            $this->addFlash('success', 'Vous allez recevoir dans quelques minute un email avec un lien pour réinitialisé pour votre de passe');
+            $this->addFlash('success', 'Vous allez recevoir dans quelques minutes un email avec un lien pour réinitialiser pour votre de passe');
 
             return $this->redirectToRoute('security_login');
         }
