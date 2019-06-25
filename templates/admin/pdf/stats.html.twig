@@ -1,0 +1,112 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Historique du Patient{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .sidebar, nav { display: none; }
+        .col-md-6 { 
+            float: left;
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+            position: relative;
+            width: 100%;
+            padding-right: 0.75rem;
+            padding-left: 0.75rem; 
+        }
+        .margin-bottom-m { margin-bottom : 0px!important }
+    </style>
+{% endblock %}
+
+
+{% block main %}
+    <div class="container-fluid" style="margin-bottom: 20px">
+        <h1 class="my-5">Suivi du patient {{ user.fullname }}</h1>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                {% if user.participateContents is not empty %}
+                    <div class="row ">
+                        {% for participateContent in user.participateContents %}
+                            {% set content = participateContent.content %}
+                            {% set url = path('contents_play', {'slug': content.slug }) %}
+                            
+                            {% if content.id == 10 %}
+                                <div class="col-md-12">
+                                    <div class="card bg-light mb-3">                           
+                                        <div style="height: 200px; background: url({{ vich_uploader_asset(content, 'coverImageFile') }}) no-repeat center center; color: black; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"></div>
+                                        <div class="card-body">
+                                            <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
+                                            <hr>
+                                            {% if participateContent.completedAt is not null %}
+                                                <div id="ribbon-container">
+                                                    <p id="ribbon-{{ content.slug }}">Terminé le {{ participateContent.completedAt | date("d/m/Y", "Europe/Paris") }}</p>
+                                                </div>
+                                            {% endif %}                                         
+                                            <h3 class="card-title">Questionnaires pré et post-formation</h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h4 class="margin-bottom-m">Avant la formation (bonnes réponses)</h4>
+                                                    <p class="progress-value"><span>{{ participateContent.result.scoring.pr }}</span>%</p>
+                                                </div>                                        
+                                                <div class="col-md-6">
+                                                    <h4 class="margin-bottom-m">Après la formation (bonnes réponses)</h4>
+                                                    {% if  participateContent.result.scoring.po == -1 %}
+                                                        <p>Pas encore répondu au questionnaire post-formation.</p>
+                                                    {% else %}
+                                                        <p class="progress-value"><span>{{ participateContent.result.scoring.po }}</span>%</p>
+                                                    {% endif %}
+                                                </div>               
+                                            </div>
+                                            <div style="clear: left;"></div>
+
+                                            <h3 class="card-title">Compétences d'ETP acquises</h3>
+                                            {% set skillsName = ["Alimentation", "Activité physique adaptée", "Hypoglycémie", 
+                                                    "Metformine", "Insulines", "Antidiabétiques oraux et injectables", "Complications"] %}
+                                            {% for skill in participateContent.result.scoring.skills %}
+                                                {% set percent = (skill.total * 100) / skill.max %}
+
+                                                <div class="col-md-6">
+                                                    <h5 class="progress-title">{{ skillsName[(skill.id - 1)] }}</h5>
+                                                    <div class="progress-value"><span>{{ percent }}</span>%</div>
+                                                </div>
+
+                                                {% if loop.index0 is odd %} 
+                                                    <div style="clear: left;"></div>
+                                                {% endif %}
+
+                                            {% endfor %}
+
+                                            <div style="clear: left;"></div>
+                                            <h3>Hémoglobine(s) glyquée(s) déclarée(s)</h3>
+                                            
+                                            {% if participateContent.result.hemoglobins is not empty %}
+                                                {% for hemoglobin in participateContent.result.hemoglobins %}
+                                                    <p>{{ hemoglobin.date|date("d/m/Y") }} => {{ hemoglobin.value }}
+                                                {% endfor %}
+                                            {% else %}
+                                                <p>Aucune données disponibles</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>   
+                {% else %}
+                    <div class="row justify-content-md-center align-items-center">
+                        <div class="col-auto text-align">
+                            <div class="alert alert-warning mt-3 mx-auto">
+                                <h4 class="alert-heading">L’utilisateur ne participe à aucun jeu sérieux.</h4>
+                            </div>
+                        </div>
+                    </div>   
+                {% endif %}
+            </div>
+        </div>
+    </div>   
+{% endblock %}
+
