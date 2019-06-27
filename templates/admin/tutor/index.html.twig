@@ -15,11 +15,11 @@
                 <tr>
                     <th>Nom</th>
                     <th>Prénom</th>
-                    <th>Adeli</th>
+                    <th>ADELI</th>
                     <th>Date de création</th>
-                    <th>Dérnière connexion</th>
+                    <th>Dernière connexion</th>
                     <th>Nombre de patients</th>
-                    <th>action</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
                         <th>
                             <a href="{{ path('admin_tutors_view', {'id': user.id}) }}" class="btn btn-primary"><i class="fas fa-users"></i></a>
                             <a href="{{ path('admin_tutors_edit', {'id': user.tutorRelation.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
-                            <form action="{{ path('admin_tutors_delete', {'id': user.tutorRelation.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
+                            <form action="{{ path('admin_tutors_delete', {'id': user.tutorRelation.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr(e) de vouloir supprimer ce médecin/tuteur ?');">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.tutorRelation.id) }}">
                                 <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                             </form>

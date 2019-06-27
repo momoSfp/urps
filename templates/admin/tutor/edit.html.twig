@@ -6,7 +6,7 @@
 
 {% block main %}
     <div class="container ">
-        <h1 class='my-5'>Modification des informations personnels</h1>
+        <h1 class='my-5'>Modification des informations du médecin/tuteur <br>Dr {{ tutor.userRelation.lastname }} {{ tutor.userRelation.firstname }}</h1>
 
         {{ form_start(form) }}
             <div class="row">

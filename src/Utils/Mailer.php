@@ -36,6 +36,11 @@ class Mailer
         return "Bienvenue sur la plateforme etp";
     }
 
+    public function getMailSubjectRegistreUser()
+    {
+        return "Inscription patient sur plateforme URPS-ML-PACA";
+    }
+
     public function getMailSubjectEndGame()
     {
         return "achèvement jeux sérieux";
@@ -57,6 +62,20 @@ class Mailer
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Aucune démarche commerciale ne résultera de votre inscription, cette plateforme et les activités qu'elle héberge ont été créées dans un but strictement informatif et éducatif, afin de soutenir les patients et le suivi par leur médecin traitant.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Pour toute question, vous pouvez contacter l'assistance de la plateforme par
         courrier électronique, à l'adresse suivante : contact-plateforme@urps-ml-paca.org</p>";              
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";        
+        $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
+        $body .= "</div>";
+
+        return $this->getMailTemplate($body);
+    }
+
+    public function getMailBodyRegistreUser(User $user, $tutorName)
+    {
+        $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bonjour " . $tutorName . "</h1>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Votre patient, <b>" . $user->getFirstname() . " " . $user->getLastname() . "</b> s'est inscrit sur la plateforme URPS-ML-PACA.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous pouvez dès à présent suivre son avancement dans le jeu. Pour cela, il vous suffit de vous connecter à la plateforme en vous identifiant et d'ouvrir l'onglet \"Mes patients\", dans votre profil.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Voici le lien pour vous connecter :<br>https://www.plateforme-etp-urps-ml-paca.fr/</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";        
         $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";
@@ -125,4 +144,5 @@ class Mailer
 
         return $content;
     }
+
 }

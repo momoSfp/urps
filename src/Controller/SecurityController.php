@@ -54,12 +54,7 @@ class SecurityController extends AbstractController
 
         $contents = $contentRepo->findAllActive();
 
-        $form = $this->createForm(RegistrationType::class, $user, [
-            'timed_spam' => true,
-            'timed_spam_min' => 3,
-            'timed_spam_max' => 40,
-            'timed_spam_message' => 'Please wait 3 seconds before submitting',
-        ]);
+        $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
 
@@ -90,19 +85,25 @@ class SecurityController extends AbstractController
     
                 $this->addFlash(
                     'success',
-                    "votre compte a bien été crée !"
+                    "Vous avez bien été inscrit(e) sur la plateforme. Un mail de confirmation vient de vous être envoyé."
                 );
     
                 $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
                 $this->container->get('security.token_storage')->setToken($token);
                 $this->container->get('session')->set('_security_main', serialize($token));
-    
+
                 $mailer->sendMail(
                     $mailer->getMailSubjectWelcome(), 
                     $mailer->getMailBodyWelcome($user, $url),
                     $user->getEmail()
                 );
-    
+
+                $mailer->sendMail(
+                    $mailer->getMailSubjectRegistreUser(), 
+                    $mailer->getMailBodyRegistreUser($user, $user->getTutor()->getUserRelation()->getFullname()),
+                    $user->getTutor()->getUserRelation()->getEmail()
+                );
+
                 return $this->redirectToRoute('home_index');
             }
             else
@@ -132,7 +133,7 @@ class SecurityController extends AbstractController
 
             if ($user === null) 
             {
-                $this->addFlash('danger', 'Cette email est inconnu');
+                $this->addFlash('danger', 'Cet email est inconnu de nos services.');
                 return $this->redirectToRoute('security_forgotten_password');
             }
 
@@ -161,7 +162,7 @@ class SecurityController extends AbstractController
                 $email
             );
 
-            $this->addFlash('success', 'Vous allez recevoir dans quelques minutes un email avec un lien pour réinitialiser pour votre de passe');
+            $this->addFlash('success', 'Vous allez recevoir dans quelques minutes un email avec un lien pour réinitialiser votre mot de passe.');
 
             return $this->redirectToRoute('security_login');
         }

@@ -23,21 +23,21 @@
                                             <p id="ribbon-{{ content.slug }}">Terminé le {{ participateContent.completedAt | date("d/m/Y", "Europe/Paris") }}</p>
                                         </div>
                                     {% endif %}
-                                    {% if content.id == 10 %}
-                                        <a style="position: absolute; left: 20px; top: 20px;" href="{{ path('pdf_stats_user', {'id': user.id }) }}"><img src="/assets/images/icon-pdf.png" alt="icon pdf" height="60px"></a>                            
-                                    {% endif %}
                                     <div style="height: 200px; background: url({{ vich_uploader_asset(content, 'coverImageFile') }}) no-repeat center center; color: black; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"></div>
                                     <div class="card-body">
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                         <hr>
                                         {% if content.id == 10 %}
+                                            <div style="text-align: center;">
+                                                <a href="{{ path('pdf_stats_user', {'id': user.id }) }}"><img src="/assets/images/icon-pdf.jpg" alt="icon pdf" height="40px">Télécharger ici le suivi du patient</a>                            
+                                            </div>
 
                                             {% for hemoglobin in participateContent.result.hemoglobins %}
                                                 {% set datesHemo  = datesHemo|merge([hemoglobin.date|date("d/m/Y")]) %}
                                                 {% set valuesHemo = valuesHemo|merge([hemoglobin.value]) %}
                                             {% endfor %}
 
-                                            <h3 class="card-title">Questionnaires pré et post-formation</h4>
+                                            <h3 class="card-title mt-2">Questionnaires pré et post-formation</h4>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="row">

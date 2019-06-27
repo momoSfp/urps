@@ -27,7 +27,7 @@ class ChangePasswordType extends AbstractType
                 'constraints' => [
                     new UserPassword(),
                 ],
-                'label' => 'Mot de passe actuelle',
+                'label' => 'Mot de passe actuel',
                 'attr' => [
                     'autocomplete' => 'off',
                 ],
@@ -40,6 +40,7 @@ class ChangePasswordType extends AbstractType
                     new Length([
                         'min' => 5,
                         'max' => BCryptPasswordEncoder::MAX_PASSWORD_LENGTH,
+                        'minMessage' => "Ce mot de passe est trop court, il doit comprendre au minimum {{ limit }} caractères.",
                     ]),
                 ],
                 'first_options' => [

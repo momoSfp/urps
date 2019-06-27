@@ -131,7 +131,7 @@ class AdminTutorController extends AbstractController
 
         return $this->render('admin/tutor/edit.html.twig', [
             'form' => $form->createView(),
-            'turor' => $tutor,
+            'tutor' => $tutor,
         ]);
     }
 

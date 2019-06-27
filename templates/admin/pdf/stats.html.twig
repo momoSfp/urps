@@ -36,7 +36,6 @@
                             {% if content.id == 10 %}
                                 <div class="col-md-12">
                                     <div class="card bg-light mb-3">                           
-                                        <div style="height: 200px; background: url({{ vich_uploader_asset(content, 'coverImageFile') }}) no-repeat center center; color: black; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"></div>
                                         <div class="card-body">
                                             <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                             <hr>
@@ -70,7 +69,7 @@
 
                                                 <div class="col-md-6">
                                                     <h5 class="progress-title">{{ skillsName[(skill.id - 1)] }}</h5>
-                                                    <div class="progress-value"><span>{{ percent }}</span>%</div>
+                                                    <div class="progress-value"><span>{{ percent|round(1, 'floor') }}</span>%</div>
                                                 </div>
 
                                                 {% if loop.index0 is odd %} 

@@ -12,8 +12,8 @@
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Date de création</th>
-                    <th>Dérnière connexion</th>
-                    <th>Tranche d'age</th>
+                    <th>Dernière connexion</th>
+                    <th>Tranche d'âge</th>
                     <th>Tuteur</th>
                     <th>Action</th>
                 </tr>
@@ -48,7 +48,7 @@
                         <th>
                             <a href="{{ path('admin_users_view', {'id': user.id}) }}" class="btn btn-primary"><i class="far fa-eye"></i></a>
                             <a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="btn btn-secondary"><i class="far fa-edit"></i></a>
-                            <form action="{{ path('admin_users_delete', {'id': user.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Etes-vous sur de votre choix ?');">
+                            <form action="{{ path('admin_users_delete', {'id': user.id}) }}" method="post" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr(e) de vouloir supprimer ce patient ? ');">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
                                 <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                             </form>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\UserType;
+use App\Form\AdminType;
 use App\Form\ChangePasswordType;
 use App\Entity\ParticipateContent;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,13 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
 
-        $form = $this->createForm(UserType::class, $user);
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            $form = $this->createForm(AdminType::class, $user);
+        }
+        else
+        {
+            $form = $this->createForm(UserType::class, $user);
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) 

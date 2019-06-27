@@ -1,6 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Administration patients{% endblock %}
+{% block title %}Patients du Dr {{ tutor.userRelation.lastname }} {{ tutor.userRelation.firstname }} inscrits sur la plateforme{% endblock %}
 
 {% block main %}
     <div class="container-fluid">
@@ -12,8 +12,8 @@
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Date de création</th>
-                    <th>Dérnière connexion</th>
-                    <th>Tranche d'age</th>
+                    <th>Dernière connexion</th>
+                    <th>Tranche d'âge</th>
                     <th>Action</th>
                 </tr>
             </thead>

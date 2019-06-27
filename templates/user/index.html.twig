@@ -40,11 +40,6 @@
                             {% set content = participateContent.content %}
                             {% set url = path('contents_play', {'slug': content.slug }) %}
 
-                            {% for hemoglobin in participateContent.result.hemoglobins %}
-                                {% set datesHemo  = datesHemo|merge([hemoglobin.date|date("d/m/Y")]) %}
-                                {% set valuesHemo = valuesHemo|merge([hemoglobin.value]) %}
-
-                            {% endfor %}
 
                             <div class="col-md-12">
                                 <div class="card bg-light mb-3">
@@ -58,7 +53,12 @@
                                     <div class="card-body">
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                         <hr>
-                                        {% if content.id == 10 %}                                    
+                                        {% if content.id == 10 %}
+                                            {% for hemoglobin in participateContent.result.hemoglobins %}
+                                                {% set datesHemo  = datesHemo|merge([hemoglobin.date|date("d/m/Y")]) %}
+                                                {% set valuesHemo = valuesHemo|merge([hemoglobin.value]) %}
+
+                                            {% endfor %}                                   
                                             <h3 class="card-title">Questionnaires pré et post-formation</h4>
                                             <div class="row">
                                                 <div class="col-md-6">
