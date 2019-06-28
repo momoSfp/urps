@@ -87,6 +87,8 @@ class UserController extends AbstractController
 
             $manager->flush();
 
+            $this->addFlash('success', 'Mot de passe mis à jour');
+            
             return $this->redirectToRoute('user_profile');
         }
 

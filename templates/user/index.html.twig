@@ -52,6 +52,7 @@
 
                                     <div class="card-body">
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
+                                        
                                         <hr>
                                         {% if content.id == 10 %}
                                             {% for hemoglobin in participateContent.result.hemoglobins %}
@@ -136,6 +137,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {% if participateContent.completedAt is not null %}
+                                                <p class="text-center" style="font-size: 20px">Évaluation de satisfaction : 
+                                                    {% for i in 1..5 %}
+                                                        {% if i <= participateContent.rating %}
+                                                            <i style="color: goldenrod;" class="fas fa-star"></i>
+                                                        {% else %}
+                                                            <i style="color: goldenrod;" class="far fa-star"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </p>
+                                            {% endif %}                                
                                         {% endif %}                                
                                     </div>
                                 </div>

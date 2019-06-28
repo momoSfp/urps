@@ -35,6 +35,7 @@
                             
                             {% if content.id == 10 %}
                                 <div class="col-md-12">
+                                    <div style="height: 200px; background: url({{ vich_uploader_asset(content, 'coverImageFile') }}) no-repeat center center; color: black; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;"></div>
                                     <div class="card bg-light mb-3">                           
                                         <div class="card-body">
                                             <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>

@@ -84,13 +84,15 @@ class Mailer
         return $this->getMailTemplate($body);
     }
 
-    public function getMailBodyEndGame(User $user, Content $content)
+    public function getMailBodyEndGame(User $user, Content $content, $url)
     {
         $body  = "<h1 style='font-size:30px;padding-right:30px;padding-left:30px'>Bravo " . $user->getFirstname() . " " . $user->getLastname() . " !</h1>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Vous avez terminé le jeu sérieux (serious game) " . $content->getTitle() . " !</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Si vous le souhaitez, vous pouvez à tout moment recommencer les activités qui vous ont été proposées dans le jeu en vous connectant à nouveau.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Votre médecin traitant est informé de votre avancement dans le jeu.</p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>N'hésitez pas à en parler avec lui.</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Merci de bien vouloir noter le " . $content->getTitle() . "</p>";
+        $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'><div style='padding-right:30px;padding-left:30px'><table style='table-layout:fixed;border:1px solid#a0a0a2;border-radius:8px;padding:40px0;margin-top:20px;width:100%;border-collapse:separate;text-align:center'><tbody><tr><td><a href='" . $url . "?u=" . ($user->getId() * 75) . "&c=" . ($content->getId() * 59) . "&r=" . (1 * 13) . "'><span style='border-radius: 5px;padding: 16px;background-color: #ff8b5a;color: white;font-size: 17px!important;'>1</span></a></td><td><a href='" . $url . "?u=" . ($user->getId() * 75) . "&c=" . ($content->getId() * 59) . "&r=" . (2 * 13) . "'><span style='border-radius: 5px;padding: 16px;background-color: #ffb233;color: white;font-size: 17px!important;'>2</span></a></td><td><a href='" . $url . "?u=" . ($user->getId() * 75) . "&c=" . ($content->getId() * 59) . "&r=" . (3 * 13) . "'><span style='padding: 16px;background-color: #ffea3a;color: white;font-size: 17px!important;border-radius: 5px;'>3</span></a></td><td><a href='" . $url . "?u=" . ($user->getId() * 75) . "&c=" . ($content->getId() * 59) . "&r=" . (4 * 13) . "'><span style='border-radius: 5px;padding: 16px;background-color: #ccdb38;color: white;font-size: 17px!important;'>4</span></a></td><td><a href='" . $url . "?u=" . ($user->getId() * 75) . "&c=" . ($content->getId() * 59) . "&r=" . (5 * 13) . "'><span style='border-radius: 5px;padding: 16px;background-color: #8ac249;color: white;font-size: 17px!important;'>5</span></a></td></tr></tbody></table></div></p>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>Cordialement</p>";
         $body .= "<div style='border-top:1px solid #e1e1e4;padding:30px 0 12px;margin-top:30px'>";
         $body .= "<p style='font-size:17px;padding-right:30px;padding-left:30px'>© 2019 Urps. Tous les droits sont réservés.</p>";

@@ -114,6 +114,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {% if participateContent.completedAt is not null %}
+                                                <p class="text-center" style="font-size: 20px">Évaluation de satisfaction : 
+                                                    {% for i in 1..5 %}
+                                                        {% if i <= participateContent.rating %}
+                                                            <i style="color: goldenrod;" class="fas fa-star"></i>
+                                                        {% else %}
+                                                            <i style="color: goldenrod;" class="far fa-star"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </p>
+                                            {% endif %}                                             
                                         {% endif %}
                                     </div>
                                 </div>

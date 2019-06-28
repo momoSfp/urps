@@ -46,6 +46,11 @@ class ParticipateContent
      */
     private $duration;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rating;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -134,6 +139,18 @@ class ParticipateContent
     public function setDuration(?int $duration): self
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?int $rating): self
+    {
+        $this->rating = $rating;
 
         return $this;
     }

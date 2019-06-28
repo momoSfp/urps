@@ -15,6 +15,7 @@ use App\Repository\ParticipateContentRepository;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Api controller
@@ -84,10 +85,11 @@ class ApiController extends FOSRestController
 
         $user = $userRepo->find($data["uid"]);
         $content = $contentRepo->find($data["cid"]);
+        $url = "http://127.0.0.1:8000/api/rating/";
 
         $mailer->sendMail(
             $mailer->getMailSubjectEndGame(), 
-            $mailer->getMailBodyEndGame($user, $content),
+            $mailer->getMailBodyEndGame($user, $content, $url),
             $user->getEmail()
         );
 
@@ -106,4 +108,59 @@ class ApiController extends FOSRestController
       return $this->handleView($this->view(['success' => 'false']));
     }
   }
+
+  /**
+   * @Rest\Get("/rating/", name="rating_update")
+   *
+   * @return Response
+   */
+  public function updateRating(ParticipateContentRepository $participateContentRepo, UserRepository $userRepo,
+   ContentRepository $contentRepo, ObjectManager $manager, Request $request)
+  {
+    
+    $userId    = ($request->query->get('u') / 75);
+    $contentId = ($request->query->get('c') / 59);
+    $rating = ($request->query->get('r') / 13);
+
+    $user = $userRepo->find($userId);
+
+    $participateContent = $participateContentRepo->findParticipateContentByUserIdAndContentId($userId, $contentId);
+    
+    if (empty($participateContent))
+    {
+        $this->addFlash(
+          'danger',
+          "Une erreur est survenue pendant le processus de notation."
+        );
+
+        return $this->redirectToRoute('home_index');
+    }
+    else
+    {
+      if ($rating > 5)
+      {
+
+        $this->addFlash(
+          'danger',
+          "Une erreur est survenue pendant le processus de notation."
+        );
+
+        return $this->redirectToRoute('home_index');
+      }
+      else
+      {
+        $participateContent->setRating($rating);
+        $manager->persist($participateContent);
+        $manager->flush();
+
+        $this->addFlash(
+          'success',
+          "Merci d'avoir noté le jeu sérieux"
+        );
+        return $this->redirectToRoute('home_index');
+
+      }
+    }
+  }
+
 }
