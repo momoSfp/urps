@@ -82,7 +82,13 @@
                                 <div class="col-xl-8 col-md-8">
                                     <p class="text-center">
                                         {% for rank in avgRating.ranks %}
-                                            {% set percent = (rank * 100) / avgRating.cp %}
+                                            
+                                            {% if avgRating.cp == 0 %}
+                                                {% set percent = 0 %}
+                                            {% else %}
+                                                {% set percent = (rank * 100) / avgRating.cp %}
+                                            {% endif %}
+
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-xl-2 col-md-2">
                                                     <p class="text-center">{{ loop.index }} <i style="color: goldenrod;" class="fas fa-star"></i></p>
