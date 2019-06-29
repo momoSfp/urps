@@ -222,6 +222,53 @@ class StatsService {
         return $stats;
     }
 
+    public function getAvgRating($participateContents)
+    {
+        
+        $result["ranks"] = [ 0 ,0, 0, 0, 0 ];
+        $result["avg"] = 0;
+        $cp = 0;
+        $sum = 0;
+
+        foreach ($participateContents as $participateContent)
+        {
+            $rating = $participateContent->getRating();
+
+            if ($rating != null)
+            {
+                $cp++;
+                $sum += $participateContent->getRating();
+
+                switch ($rating) {
+                    case 1:
+                        $result["ranks"][0]++;
+                        break;
+                    case 2:
+                        $result["ranks"][1]++;
+                        break;
+                    case 3:
+                        $result["ranks"][2]++;
+                        break;
+                    case 4:
+                        $result["ranks"][3]++;
+                        break;
+                    case 5:
+                        $result["ranks"][4]++;
+                        break;
+                }                
+            }
+        }
+
+        $result["cp"] = $cp;
+
+        if ($sum != 0)
+        {
+            $result["avg"] = round(($sum / $cp), 1);
+        }
+
+        return $result;
+    }
+
     private function convertSecondsToDate($seconds) 
     {
         $dt1 = new \DateTime("@0");

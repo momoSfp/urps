@@ -131,6 +131,7 @@ class AdminContentController extends AbstractController
         $avgDuration     = $statsService->getAvgDurationParticiapteContentByContent($content);
         $avgDiffDate     = $statsService->getAvgDiffBetweenStartEndDatePcByContent($content);
         $statsHemo       = $statsService->getAvgHemo($participateContents);
+        $avgRating       = $statsService->getAvgRating($participateContents);
         
         return $this->render('admin/content/stats.html.twig', [
             'content'               => $content,
@@ -141,6 +142,7 @@ class AdminContentController extends AbstractController
             'avgDuration'           => $avgDuration,
             'avgDiffDate'           => $avgDiffDate,
             'statsHemo'             => $statsHemo,
+            'avgRating'             => $avgRating,
         ]);
     }
 

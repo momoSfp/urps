@@ -85,7 +85,7 @@ class ApiController extends FOSRestController
 
         $user = $userRepo->find($data["uid"]);
         $content = $contentRepo->find($data["cid"]);
-        $url = "http://127.0.0.1:8000/api/rating/";
+        $url = "https://www.plateforme-etp-urps-ml-paca.fr/api/rating/";
 
         $mailer->sendMail(
             $mailer->getMailSubjectEndGame(), 

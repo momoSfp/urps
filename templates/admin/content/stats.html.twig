@@ -22,7 +22,6 @@
             </div>   
         {% else %}
             <div class="row justify-content-md-center">
-
                 <div class="col-xl-6 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
@@ -70,6 +69,54 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-xl-12 col-md-12 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">Évaluation(s) patient</div>
+                                </div>
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-xl-8 col-md-8">
+                                    <p class="text-center">
+                                        {% for rank in avgRating.ranks %}
+                                            {% set percent = (rank * 100) / avgRating.cp %}
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-xl-2 col-md-2">
+                                                    <p class="text-center">{{ loop.index }} <i style="color: goldenrod;" class="fas fa-star"></i></p>
+                                                </div>
+                                                <div class="col-xl-6 col-md-6">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-4 col-md-4 pl-3">
+                                                    <p>{{ rank }} patient(s)</p>
+                                                </div>                                                
+                                            </div>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="col-xl-4 col-md-4">
+                                    <p class="text-center" style="font-size: 20px"><span style="font-size: 24px"><b>{{ avgRating.avg }}</b></span> / 5</p>
+                                    <p class="text-center">
+                                        {% for i in 1..5 %}
+                                            {% if i <= avgRating.avg %}
+                                                <i style="color: goldenrod;" class="fas fa-star"></i>
+                                            {% else %}
+                                                <i style="color: goldenrod;" class="far fa-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                </div>                                
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="row justify-content-md-center">
                 <!-- Donut Chart -->
