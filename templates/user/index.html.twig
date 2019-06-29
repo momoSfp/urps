@@ -54,7 +54,7 @@
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                         
                                         <hr>
-                                        {% if content.id == 10 %}
+                                        {% if content.id == 10 and participateContent.result is not empty %}
                                             {% for hemoglobin in participateContent.result.hemoglobins %}
                                                 {% set datesHemo  = datesHemo|merge([hemoglobin.date|date("d/m/Y")]) %}
                                                 {% set valuesHemo = valuesHemo|merge([hemoglobin.value]) %}
@@ -147,7 +147,13 @@
                                                         {% endif %}
                                                     {% endfor %}
                                                 </p>
-                                            {% endif %}                                
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="col-auto text-align">
+                                                <div class="alert alert-warning mt-3 mx-auto">
+                                                    <h4 class="alert-heading">Vous n'avez pas de sauvegarde pour ce jeu sérieux.</h4>
+                                                </div>
+                                            </div>                                                                           
                                         {% endif %}                                
                                     </div>
                                 </div>

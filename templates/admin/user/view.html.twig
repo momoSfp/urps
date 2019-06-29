@@ -27,7 +27,7 @@
                                     <div class="card-body">
                                         <h2 class="text-truncate" style="text-align: center;">{{ content.title }}</h2>
                                         <hr>
-                                        {% if content.id == 10 %}
+                                        {% if content.id == 10 and participateContent.result is not empty %}
                                             <div style="text-align: center;">
                                                 <a href="{{ path('pdf_stats_user', {'id': user.id }) }}"><img src="/assets/images/icon-pdf.jpg" alt="icon pdf" height="40px">Télécharger ici le suivi du patient</a>                            
                                             </div>
@@ -124,7 +124,13 @@
                                                         {% endif %}
                                                     {% endfor %}
                                                 </p>
-                                            {% endif %}                                             
+                                            {% endif %} 
+                                        {% else %}
+                                            <div class="col-auto text-align">
+                                                <div class="alert alert-warning mt-3 mx-auto text-center">
+                                                    <h4 class="alert-heading">L’utilisateur n'a pas de sauvegarde pour ce jeu sérieux.</h4>
+                                                </div>
+                                            </div>                                   
                                         {% endif %}
                                     </div>
                                 </div>
