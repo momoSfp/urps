@@ -15,9 +15,9 @@
     <!-- Header -->
     <header class="masthead bg-primary-custom text-white text-center">
         <div class="container">
-            <h1 class="text-uppercase mb-0">Public</h1>
+            <h1 class="text-uppercase mb-0">Accès Public</h1>
             <hr class="star-light">
-            <h2 class="font-weight-light mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, ratione?</h2>
+            <h2 class="font-weight-light mb-0">Cette plateforme s’adresse aux patients des médecins libéraux de PACA, afin de soutenir leur activité de soins en tant qu’acteurs régionaux de Santé Publique.</h2>
         </div>
     </header>
 
@@ -78,7 +78,7 @@
                                             </div>
                                             
                                             <p class="mb-5 mt-3">{{ content.description | raw}}</p>
-                                            <form action="{{ path('contents_play', {'slug': content.slug }) }}" method="post">
+                                            <form action="{{ path('public_play', {'slug': content.slug }) }}" method="post">
                                                 <input class="btn btn-success btn-lg rounded-pill" type="submit" value="Jouer">
                                                 <input id="cid" name="cid" type="hidden" value="{{ content.id }}">
                                                 <input id="www" name="www" type="hidden" value="{{ url('home_index') }}">

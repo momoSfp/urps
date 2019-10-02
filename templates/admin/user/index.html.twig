@@ -21,8 +21,8 @@
             <tbody>
                 {% for user in users %}
                     <tr>
-                        <th>{{ user.firstname }}</th>
                         <th>{{ user.lastname }}</th>
+                        <th>{{ user.firstname }}</th>
                         <th>{{ user.createdAt | date("d/m/Y", "Europe/Paris") }}</th>
                         <th class="text-center"> 
                             {% if user.updatedAt is null %}  
