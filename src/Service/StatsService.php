@@ -57,6 +57,73 @@ class StatsService {
                             ->setParameter('date', new \DateTime('-' . $period . ' month'))
                             ->getSingleScalarResult();
     }
+    
+    public function generateStatsPublicPagesVisited()
+    {
+        $datas   = [];
+        $stats   = [];
+        $details = [];
+
+        $datasDb = $this->manager->createQuery('SELECT pc FROM App\Entity\PublicContentVisited pc')
+                                    ->getResult();
+
+        foreach( $datasDb as $data)
+        {
+            $date  = $data->getDate()->format('Y-m-d');
+            $year  = explode("-", $date)[0];
+            $month = explode("-", $date)[1];
+            $day   = explode("-", $date)[2];
+            
+            if (!isset($stats[$year]))
+            {
+                $stats[$year]["home"]    = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                $stats[$year]["content"] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            }
+            
+            $stats[$year]["home"][$month -1] += $data->getCountHomePage();
+            $stats[$year]["content"][$month -1] += $data->getCountContentPage();
+
+        }
+
+        foreach( $datasDb as $data)
+        {
+            $date  = $data->getDate()->format('Y-m-d');
+            $year  = explode("-", $date)[0];
+            $month = explode("-", $date)[1];
+            $day   = explode("-", $date)[2];
+            
+            if (!isset($details[$year]))
+            {
+                $details[$year]["home"]    = [];
+                $details[$year]["content"] = [];
+
+                for ($i = 0; $i < 12; $i++)
+                {
+                    if ($i == 0 || $i == 2 || $i == 4 || $i == 6 || $i == 7 || $i == 9 || $i == 11)
+                        $nbDay = 31;
+                    elseif ($i == 3 || $i == 5 || $i == 8 || $i == 10)
+                        $nbDay = 30;
+                    else
+                        $nbDay = 29;
+
+                    
+                    for ($j = 0; $j < $nbDay; $j++)
+                    {
+                        $details[$year]["home"][$i][$j] = 0;
+                        $details[$year]["content"][$i][$j] = 0;
+                    }
+                }
+            }
+            
+            $details[$year]["home"][$month -1][$day -1] = $data->getCountHomePage();
+            $details[$year]["content"][$month -1][$day -1] = $data->getCountContentPage();
+        }
+        
+        $datas[] = $stats;
+        $datas[] = $details;
+
+        return $datas;
+    }
 
     public function generateStatsUsersConnectionByYear()
     {
