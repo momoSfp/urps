@@ -140,7 +140,7 @@ class Mailer
 
     public function getMailTemplate($body)
     {
-        $content = "<table style='background-color: #e4e4e4;padding-top:20px;color:#434245;width:100%;border:0;text-align:center;'> <tbody> <tr> <td style='vertical-align:top;padding:0'> <center> <table id='m_4144290773013187565body' class='m_4144290773013187565card' style='border:0;border-collapse:collapse;margin:0 auto;background: white;border-radius:8px;margin-bottom:16px;'> <tbody> <tr> <td style='width:546px;vertical-align:top;padding-top:32px'> <div style='max-width:600px;margin:0 auto'> <img style='width:168px;margin:0 0 15px 0;padding-right:30px;padding-left:30px' src='<img style='width:168px;margin:0 0 15px 0;padding-right:30px;padding-left:30px' src='https://santeformapro.com/mail_com/images/logo_urps.jpg'>";
+        $content = "<table style='background-color: #e4e4e4;padding-top:20px;color:#434245;width:100%;border:0;text-align:center;'><tbody><tr><td style='vertical-align:top;padding:0'><center><table id='m_4144290773013187565body' class='m_4144290773013187565card' style='border:0;border-collapse:collapse;margin:0 auto;background: white;border-radius:8px;margin-bottom:16px;'><tbody><tr><td style='width:546px;vertical-align:top;padding-top:32px'><div style='max-width:600px;margin:0 auto'><img style='width:168px;margin:0 0 15px 0;padding-right:30px;padding-left:30px' src='https://santeformapro.com/mail_com/images/logo_urps.jpg'>";
         $content .=  $body;
         $content .= "</div></td></tr></tbody></table></center></td></tr></tbody></table>";
 
